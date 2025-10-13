@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health Individual Treatment Plan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="../images/favicon.png">
+    <meta name="description" content="Mental Health Individual Treatment Plan form for Watson Community Health Center. Save, export, and print legally binding clinical documents securely and accessibly.">
+    <meta property="og:title" content="Mental Health Individual Treatment Plan - Watson Community Health Center">
+    <meta property="og:description" content="Comprehensive mental health treatment plan form with save/export/print features for clinical use.">
+    <meta property="og:image" content="../images/goldlogo.png">
+    <meta property="og:type" content="website">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .signature-line { height: 2.5rem; border-bottom: 1px solid #4b5563; margin-top: 0.25rem; }
+        .form-container { max-width: 960px; margin: 2rem auto; padding: 2rem; background-color: #ffffff; border-radius: 1.5rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+        .form-field-group { border-radius: 0.75rem; padding: 1.5rem; background-color: #f9fafb; border: 1px solid #e5e7eb; }
+        .form-label { font-weight: 600; color: #111827; margin-bottom: 0.5rem; display: block; }
+        .form-input, .form-textarea, .form-select { display: block; width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; background-color: #ffffff; transition: all 0.2s; }
+        .form-input:focus, .form-textarea:focus, .form-select:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.5); }
+        .form-input:read-only { background-color: #f3f4f6; cursor: not-allowed; }
+        .form-button { display: inline-block; padding: 0.75rem 1.5rem; font-weight: 600; color: #ffffff; border-radius: 0.75rem; transition: all 0.2s; cursor: pointer; border: none; }
+        .form-button:hover, .form-button:focus { opacity: 0.9; outline: 2px solid #d3af37; outline-offset: 2px;}
+        .nav-link { display: block; padding: 0.5rem 1rem; border-radius: 0.5rem; margin-bottom: 0.5rem; font-weight: 500; color: #4b5563; background-color: #f3f4f6; transition: background-color 0.2s; }
+        .nav-link:hover, .nav-link:focus { background-color: #e5e7eb; outline: 2px solid #d3af37; outline-offset: 2px;}
+        .nav-container { position: fixed; top: 2rem; left: 2rem; width: 250px; z-index: 10; display: none; max-height: calc(100vh - 4rem); overflow-y: auto; padding-right: 8px;}
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+        .modal-content { background: white; padding: 1.5rem; border-radius: 1rem; max-width: 600px; width: 90%; max-height: 80vh; display: flex; flex-direction: column; }
+        .modal-body { overflow-y: auto; }
+        .modal-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; border: 1px solid #e5e7eb; border-radius: 0.5rem; margin-bottom: 0.5rem; cursor: pointer; transition: background-color 0.2s; }
+        .modal-item:hover { background-color: #f3f4f6; }
+        .delete-btn { background-color: #ef4444; color: white; border: none; padding: 0.25rem 0.75rem; border-radius: 0.5rem; font-size: 0.75rem; cursor: pointer; }
+        .delete-btn:hover { background-color: #dc2626; }
+        .sr-only { position: absolute!important; width: 1px!important; height: 1px!important; padding: 0!important; margin: -1px!important; overflow: hidden!important; clip: rect(0,0,0,0)!important; white-space: nowrap!important; border: 0!important; }
+        .focus\:not-sr-only:focus { position: static!important; width: auto!important; height: auto!important; margin: 0!important; overflow: visible!important; clip: auto!important; white-space: normal!important; }
+        @media print {
+          body { background-color: #fff !important; }
+          .no-print { display: none !important; }
+          .print-only { display: block !important; }
+          .form-container { box-shadow: none !important; margin: 0 !important; padding: 0.5in !important; border-radius: 0; }
+          .page-break { page-break-before: always; }
+        }
+        @media (min-width: 1024px) { .nav-container { display: block; } .form-container { margin-left: 280px; } }
+    </style>
+</head>
+<body>
+    <!-- Accessibility: skip to content link for screen readers -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-yellow-200 p-2 rounded z-50">Skip to main content</a>
+    
+    <!-- Sidebar Navigation with ARIA -->
+    <div class="nav-container" role="navigation" aria-label="Form Section Navigation">
+        <a href="../index.html" class="nav-link font-bold text-blue-600 hover:bg-blue-100 mb-4" tabindex="0">← Forms Home</a>
+        <h3 class="font-bold text-gray-900 mb-2">Form Sections</h3>
+        <nav id="form-nav" aria-label="Section links"></nav>
+    </div>
+
+    <div id="main-content" class="form-container" role="main" tabindex="-1">
+        <h1 class="text-3xl font-bold text-center text-gray-900 mb-2">Watson Community Health Centre</h1>
+        <h2 class="text-xl font-medium text-center text-gray-600 mb-8">Mental Health Individual Treatment Plan</h2>
+        
+        <form id="treatmentPlanForm" onsubmit="return false;" aria-label="Mental Health Individual Treatment Plan Form">
+            <input type="hidden" id="formId" value="mh-itp-v1">
+
+            <!-- Section 1: Client Demographics -->
+            <div id="section-demographics" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Client Demographics</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="date" class="form-label">Date</label>
+                            <input type="date" id="date" name="date" class="form-input" required>
+                        </div>
+                        <div>
+                            <label for="recordNumber" class="form-label">Record Number</label>
+                            <input type="text" id="recordNumber" name="recordNumber" class="form-input" required>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="clientName" class="form-label">Client Name (Last, First, MI)</label>
+                            <input type="text" id="clientName" name="clientName" class="form-input" placeholder="Last, First, MI" required>
+                        </div>
+                        <div>
+                            <label for="dob" class="form-label">DOB</label>
+                            <input type="date" id="dob" name="dob" class="form-input" required>
+                        </div>
+                        <div>
+                            <label for="age" class="form-label">Age</label>
+                            <input type="number" id="age" name="age" class="form-input" readonly>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="address" class="form-label">Address (Street, City, State, Zip)</label>
+                            <input type="text" id="address" name="address" class="form-input" placeholder="Street, City, State, Zip">
+                        </div>
+                        <div>
+                            <label for="race" class="form-label">Race</label>
+                            <select id="race" name="race" class="form-select">
+                                <option value="">Select...</option>
+                                <option value="White">White</option>
+                                <option value="Black or African American">Black or African American</option>
+                                <option value="Hispanic or Latino">Hispanic or Latino</option>
+                                <option value="Asian">Asian</option>
+                                <option value="American Indian or Alaska Native">American Indian or Alaska Native</option>
+                                <option value="Native Hawaiian or Pacific Islander">Native Hawaiian or Pacific Islander</option>
+                                <option value="Two or more races">Two or more races</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="gender" class="form-label">Gender</label>
+                            <select id="gender" name="gender" class="form-select">
+                                <option value="">Select...</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Non-binary">Non-binary</option>
+                                <option value="Prefer not to say">Prefer not to say</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="phoneNumber" class="form-label">Phone Number</label>
+                            <input type="tel" id="phoneNumber" name="phoneNumber" class="form-input" placeholder="(555) 555-5555">
+                        </div>
+                        <div>
+                            <label class="form-label">Phone Type</label>
+                            <div class="flex items-center space-x-4 mt-2">
+                                <label class="flex items-center"><input type="radio" name="phoneType" value="Cell" class="h-4 w-4"> <span class="ml-2 text-sm">Cell Phone</span></label>
+                                <label class="flex items-center"><input type="radio" name="phoneType" value="Landline" class="h-4 w-4"> <span class="ml-2 text-sm">Landline</span></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: Individual Treatment Plan -->
+            <div id="section-itp" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Individual Treatment Plan</h3>
+                    <div>
+                        <label for="itpSummary" class="form-label">
+                            Individual Treatment Plan (see progress note dated: 
+                            <input type="date" name="itpProgressNoteDate" class="form-input w-48 inline-block ml-2"> 
+                            for detailed summary of client's participation in ITP development).
+                        </label>
+                        <textarea id="itpSummary" name="itpSummary" class="form-textarea h-48"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3: DSM 5 Diagnosis -->
+            <div id="section-diagnosis" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">DSM 5 Diagnosis</h3>
+                    <p class="text-sm text-gray-600 mb-4">(Include both DE & SUD Assessment)</p>
+                    
+                    <div class="space-y-2">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 font-semibold text-sm text-gray-700">
+                            <div>Diagnosis</div>
+                            <div>Code (DSM 5 and ICD 10)</div>
+                            <div>Date Diagnosis Identified</div>
+                        </div>
+                        <div id="diagnosis-grid" class="space-y-2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 4: Service and Service Frequency -->
+            <div id="section-services" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Service and Service Frequency</h3>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-2 font-semibold text-sm">
+                        <div>Service and Staff Providing Service</div>
+                        <div>Service Frequency</div>
+                    </div>
+            
+                    <div class="grid grid-cols-2 gap-4 items-start py-2 border-t">
+                        <div>
+                            <label class="flex items-start">
+                                <input type="checkbox" name="service[]" value="Diagnostic Evaluation" class="h-4 w-4 mt-1 flex-shrink-0">
+                                <span class="ml-3 text-sm">
+                                    <span class="font-semibold">Diagnostic Evaluation</span>
+                                    <span class="text-gray-600 block text-xs">(Includes Diagnostic Evaluation with and without medical, and Diagnostic Update)<br>Licensed professionals as identified in OAC 5122-29-03</span>
+                                </span>
+                            </label>
+                        </div>
+                        <div>
+                            <input type="text" name="service_freq_diag_eval" class="form-input">
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4 items-start py-2 border-t">
+                        <div>
+                            <label class="flex items-start">
+                                <input type="checkbox" name="service[]" value="Psychoeducation Support Services" class="h-4 w-4 mt-1 flex-shrink-0">
+                                <span class="ml-3 text-sm">
+                                    <span class="font-semibold">Psychoeducation Support Services</span>
+                                    <span class="text-gray-600 block text-xs">(Includes Psychosocial Service Rehabilitation, Therapeutic Behavioral Services)<br>QBHS/QMHS, Licensed professionals as identified in OAC 5122-29-03</span>
+                                </span>
+                            </label>
+                        </div>
+                        <div>
+                            <input type="text" name="service_freq_psycho" class="form-input">
+                        </div>
+                    </div>
+            
+                    <div class="grid grid-cols-2 gap-4 items-start py-2 border-t">
+                        <div>
+                            <label class="flex items-start">
+                                <input type="checkbox" name="service[]" value="Therapeutic Day Treatment" class="h-4 w-4 mt-1 flex-shrink-0">
+                                <span class="ml-3 text-sm">
+                                    <span class="font-semibold">Therapeutic Day Treatment (TBS Group Service)</span>
+                                    <span class="text-gray-600 block text-xs">(Mental health day treatment service)<br>QBHS (3 yrs+ Exp.), QBHS BA, QBHS MA, & Licensed professionals as identified in OAC 5122-29-06 Per Diem (Min 2.5 hours)</span>
+                                </span>
+                            </label>
+                        </div>
+                        <div>
+                            <input type="text" name="service_freq_day_tx" class="form-input">
+                        </div>
+                    </div>
+            
+                    <div class="grid grid-cols-2 gap-4 items-start py-2 border-t">
+                        <div>
+                            <label class="flex items-start">
+                                <input type="checkbox" name="service[]" value="Psychotherapy" class="h-4 w-4 mt-1 flex-shrink-0">
+                                <span class="ml-3 text-sm">
+                                    <span class="font-semibold">Psychotherapy</span>
+                                    <span class="text-gray-600 block text-xs">(Includes Psychotherapy for individuals, families, interactive complexity, and crisis)<br>Licensed professionals as identified in OAC 5122-29-03</span>
+                                </span>
+                            </label>
+                        </div>
+                        <div>
+                            <input type="text" name="service_freq_psychotherapy" class="form-input">
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4 items-start py-2 border-t">
+                        <div>
+                            <label class="flex items-start">
+                                <input type="checkbox" name="service[]" value="Psychotherapy Group" class="h-4 w-4 mt-1 flex-shrink-0">
+                                <span class="ml-3 text-sm">
+                                    <span class="font-semibold">Psychotherapy Group</span>
+                                    <span class="text-gray-600 block text-xs">(Includes Psychotherapy for individuals, families, interactive complexity, and crisis)<br>Licensed professionals as identified in OAC 5122-29-03</span>
+                                </span>
+                            </label>
+                        </div>
+                        <div>
+                            <input type="text" name="service_freq_psychotherapy_group" class="form-input">
+                        </div>
+                    </div>
+            
+                    <div class="grid grid-cols-2 gap-4 items-start py-2 border-t">
+                        <div>
+                            <label class="flex items-start">
+                                <input type="checkbox" name="service[]" value="Medication Management" class="h-4 w-4 mt-1 flex-shrink-0">
+                                <span class="ml-3 text-sm">
+                                    <span class="font-semibold">Medication Management</span>
+                                    <span class="text-gray-600 block text-xs">Licensed professionals as identified in OAC 5122-29-03</span>
+                                </span>
+                            </label>
+                        </div>
+                        <div>
+                            <input type="text" name="service_freq_med_mgmt" class="form-input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 5: Strengths, Needs, Abilities, Preferences (SNAP) -->
+            <div id="section-snap" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Strengths, Needs, Abilities, Preferences (SNAP)</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="snap_strengths" class="form-label">Client Strengths (What are some things that will help you in treatment?)</label>
+                            <textarea id="snap_strengths" name="snap_strengths" class="form-textarea h-24"></textarea>
+                        </div>
+                        <div>
+                            <label for="snap_needs" class="form-label">Client Needs (What do you want to learn in treatment?)</label>
+                            <textarea id="snap_needs" name="snap_needs" class="form-textarea h-24"></textarea>
+                        </div>
+                        <div>
+                            <label for="snap_abilities" class="form-label">Client Abilities (What are some of your personal qualities, skills, or talents that will help you in treatment?)</label>
+                            <textarea id="snap_abilities" name="snap_abilities" class="form-textarea h-24"></textarea>
+                        </div>
+                        <div>
+                            <label for="snap_preferences" class="form-label">Client Preferences (What do you hope to get out of treatment?)</label>
+                            <textarea id="snap_preferences" name="snap_preferences" class="form-textarea h-24"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 6: Problem/Goals/Methods -->
+            <div id="section-problems-goals" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Problem/Goals/Methods and Target Outcome Rating</h3>
+                    <p class="text-sm text-gray-600 mb-4">(Either increase, decrease or extinguish frequency, intensity, duration)</p>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="problem_addressed" class="form-label">Problem Addressed:</label>
+                            <input type="text" id="problem_addressed" name="problem_addressed" class="form-input">
+                        </div>
+                        <div>
+                            <label for="problem_statement" class="form-label">Problem Statement:</label>
+                            <textarea id="problem_statement" name="problem_statement" class="form-textarea h-24"></textarea>
+                        </div>
+                        <div>
+                            <label for="problem_comments" class="form-label">Comments (describe problem in specific detail):</label>
+                            <textarea id="problem_comments" name="problem_comments" class="form-textarea h-32"></textarea>
+                        </div>
+                        <div>
+                            <label for="goal_statement" class="form-label">Goal Statement:</label>
+                            <textarea id="goal_statement" name="goal_statement" class="form-textarea h-24"></textarea>
+                        </div>
+                        <hr class="my-6 border-gray-300">
+                        <h4 class="text-md font-semibold text-gray-800 mb-2">Problem Severity</h4>
+                        <p class="text-xs text-gray-500 mb-4">Mild 2-3; Moderate 4-6; Serious 7-8 ; Severe 9-10</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="current_severity" class="form-label">Current severity of problem:</label>
+                                <input type="text" id="current_severity" name="current_severity" class="form-input">
+                            </div>
+                            <div>
+                                <label for="target_outcome" class="form-label">Target outcome rating:</label>
+                                <input type="text" id="target_outcome" name="target_outcome" class="form-input">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="goal_in_words" class="form-label">Goal in Client's Own Words:</label>
+                            <textarea id="goal_in_words" name="goal_in_words" class="form-textarea h-24"></textarea>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="date_identified" class="form-label">Date Identified:</label>
+                                <input type="date" id="date_identified" name="date_identified" class="form-input">
+                            </div>
+                            <div>
+                                <label for="target_completion_date" class="form-label">Target Completion Date:</label>
+                                <input type="date" id="target_completion_date" name="target_completion_date" class="form-input">
+                            </div>
+                        </div>
+                        <p class="text-sm font-semibold pt-4">All Methods/Interventions provided by Watson eligible provider</p>
+                        <div>
+                            <label for="method_1" class="form-label">Method 1 (Intervention):</label>
+                            <input type="text" id="method_1" name="method_1" class="form-input">
+                        </div>
+                        <div>
+                            <label for="method_2" class="form-label">Method 2 (Intervention):</label>
+                            <input type="text" id="method_2" name="method_2" class="form-input">
+                        </div>
+                        <div>
+                            <label for="method_3" class="form-label">Method 3 (Intervention):</label>
+                            <input type="text" id="method_3" name="method_3" class="form-input">
+                        </div>
+                        <div>
+                            <label for="method_4" class="form-label">Method 4 (Intervention):</label>
+                            <input type="text" id="method_4" name="method_4" class="form-input">
+                        </div>
+                        <div>
+                            <label for="method_5" class="form-label">Method 5 (Intervention):</label>
+                            <input type="text" id="method_5" name="method_5" class="form-input">
+                        </div>
+                         <div>
+                            <label for="problem_additional_info" class="form-label">Additional Information:</label>
+                            <textarea id="problem_additional_info" name="problem_additional_info" class="form-textarea h-24"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 7: Medical Necessity -->
+            <div id="section-medical-necessity" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Medical Necessity</h3>
+                    <p class="text-xs text-gray-500 mb-4">Mild 2-3; Moderate 4-6; Serious 7-8; Severe 9-10</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="symptom_severity" class="form-label">Severity of Symptoms:</label>
+                            <input type="text" id="symptom_severity" name="symptom_severity" class="form-input">
+                        </div>
+                        <div>
+                            <label for="functioning_impairment" class="form-label">Levels of functioning impairment:</label>
+                            <input type="text" id="functioning_impairment" name="functioning_impairment" class="form-input">
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <label class="form-label">Area of Functioning Impairment:</label>
+                        <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+                            <label class="flex items-center"><input type="checkbox" name="impairment_area[]" value="Work/occupation" class="h-4 w-4"><span class="ml-2">Work/occupation</span></label>
+                            <label class="flex items-center"><input type="checkbox" name="impairment_area[]" value="School" class="h-4 w-4"><span class="ml-2">School</span></label>
+                            <label class="flex items-center"><input type="checkbox" name="impairment_area[]" value="Family" class="h-4 w-4"><span class="ml-2">Family</span></label>
+                            <label class="flex items-center"><input type="checkbox" name="impairment_area[]" value="Relations" class="h-4 w-4"><span class="ml-2">Relations</span></label>
+                            <label class="flex items-center"><input type="checkbox" name="impairment_area[]" value="Social" class="h-4 w-4"><span class="ml-2">Social</span></label>
+                            <label class="flex items-center"><input type="checkbox" name="impairment_area[]" value="Judgment" class="h-4 w-4"><span class="ml-2">Judgment</span></label>
+                            <label class="flex items-center"><input type="checkbox" name="impairment_area[]" value="Thinking" class="h-4 w-4"><span class="ml-2">Thinking</span></label>
+                            <label class="flex items-center"><input type="checkbox" name="impairment_area[]" value="Mood" class="h-4 w-4"><span class="ml-2">Mood</span></label>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <label class="form-label">Does the DSM 5 diagnosis with a description of functioning and symptoms?</label>
+                        <div class="flex items-center space-x-4">
+                            <label class="flex items-center"><input type="radio" name="dsm_description_match" value="Yes" class="h-4 w-4"><span class="ml-2">Yes</span></label>
+                            <label class="flex items-center"><input type="radio" name="dsm_description_match" value="No" class="h-4 w-4"><span class="ml-2">No</span></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 8: Recommendations and Transition Plan -->
+            <div id="section-recommendations" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Recommendations and Transition Plan</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="form-label">Without treatment, will the client be expected to suffer prolonged, increased or new psychiatric symptoms or impairment of functioning?</label>
+                            <div class="flex items-center space-x-4">
+                                <label class="flex items-center"><input type="radio" name="without_treatment_outcome" value="Yes" class="h-4 w-4"><span class="ml-2">Yes</span></label>
+                                <label class="flex items-center"><input type="radio" name="without_treatment_outcome" value="No" class="h-4 w-4"><span class="ml-2">No</span></label>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="transition_plan" class="form-label">What is the client's transition plan?</label>
+                            <textarea id="transition_plan" name="transition_plan" class="form-textarea h-32"></textarea>
+                            <p class="text-xs italic text-gray-500 mt-2">*ITP to be reviewed every annually, at client's request, as clinically indicated, or adding/ terminating of a service</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Section 9: ITP Goal Review -->
+            <div id="section-goal-review" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">ITP Goal Review</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="review_reason" class="form-label">Reason for Review:</label>
+                            <textarea id="review_reason" name="review_reason" class="form-textarea h-32"></textarea>
+                        </div>
+                        <div>
+                            <label for="progress" class="form-label">Progress:</label>
+                            <input type="text" id="progress" name="progress" class="form-input">
+                        </div>
+                        <div>
+                            <label for="new_target_date" class="form-label">New Target date (if previous goal continued):</label>
+                            <input type="date" id="new_target_date" name="new_target_date" class="form-input">
+                        </div>
+                        <div>
+                            <label class="flex items-center">
+                                <input type="checkbox" name="goals_discontinued" value="true" class="h-4 w-4">
+                                <span class="ml-2">Previous goal(s) discontinued</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label for="progress_remarks" class="form-label">Remarks regarding client's progress:</label>
+                            <textarea id="progress_remarks" name="progress_remarks" class="form-textarea h-32"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 10: Signatures -->
+            <div id="section-signatures" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Signatures</h3>
+                    <div class="space-y-6">
+                        <!-- Required Signatures -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                            <div>
+                                <label class="form-label text-sm">Client's Signature</label>
+                                <div class="signature-line"></div>
+                            </div>
+                            <div>
+                                <label for="sig_client_name" class="form-label text-sm">Printed Name</label>
+                                <input type="text" id="sig_client_name" name="sig_client_name" class="form-input">
+                            </div>
+                            <div>
+                                <label for="sig_client_date" class="form-label text-sm">Date</label>
+                                <input type="date" id="sig_client_date" name="sig_client_date" class="form-input">
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                            <div>
+                                <label class="form-label text-sm">Staff/Credentials</label>
+                                <div class="signature-line"></div>
+                            </div>
+                            <div>
+                                <label for="sig_staff_name" class="form-label text-sm">Printed Name/Credentials</label>
+                                <input type="text" id="sig_staff_name" name="sig_staff_name" class="form-input">
+                            </div>
+                            <div>
+                                <label for="sig_staff_date" class="form-label text-sm">Date</label>
+                                <input type="date" id="sig_staff_date" name="sig_staff_date" class="form-input">
+                            </div>
+                        </div>
+
+                        <!-- Optional Signatures - Show/Hide with Checkboxes -->
+                        <hr class="my-6 border-gray-300">
+                        <h4 class="text-md font-semibold text-gray-800 mb-4">Optional Signatures (check to include if applicable)</h4>
+                        
+                        <!-- Parent/Guardian -->
+                        <div>
+                            <label class="flex items-center mb-4">
+                                <input type="checkbox" id="include_parent_sig" onchange="toggleSignatureSection('parent')" class="h-4 w-4">
+                                <span class="ml-2 font-medium">Include Parent/Legally Authorized Representative Signature</span>
+                            </label>
+                            <div id="parent_signature_section" class="hidden grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                                <div>
+                                    <label class="form-label text-sm">Parent/Legally Authorized Representative Signature</label>
+                                    <div class="signature-line"></div>
+                                </div>
+                                <div>
+                                    <label for="sig_parent_name" class="form-label text-sm">Printed Name</label>
+                                    <input type="text" id="sig_parent_name" name="sig_parent_name" class="form-input">
+                                </div>
+                                <div>
+                                    <label for="sig_parent_date" class="form-label text-sm">Date</label>
+                                    <input type="date" id="sig_parent_date" name="sig_parent_date" class="form-input">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Other -->
+                        <div>
+                            <label class="flex items-center mb-4">
+                                <input type="checkbox" id="include_other_sig" onchange="toggleSignatureSection('other')" class="h-4 w-4">
+                                <span class="ml-2 font-medium">Include Other Signature</span>
+                            </label>
+                            <div id="other_signature_section" class="hidden grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                                <div>
+                                    <label for="sig_other_specify" class="form-label text-sm">Other (Specify)</label>
+                                    <input type="text" id="sig_other_specify" name="sig_other_specify" class="form-input">
+                                </div>
+                                <div>
+                                    <label for="sig_other_name" class="form-label text-sm">Printed Name</label>
+                                    <input type="text" id="sig_other_name" name="sig_other_name" class="form-input">
+                                </div>
+                                <div>
+                                    <label for="sig_other_date" class="form-label text-sm">Date</label>
+                                    <input type="date" id="sig_other_date" name="sig_other_date" class="form-input">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Provider -->
+                        <div>
+                            <label class="flex items-center mb-4">
+                                <input type="checkbox" id="include_provider_sig" onchange="toggleSignatureSection('provider')" class="h-4 w-4">
+                                <span class="ml-2 font-medium">Include Provider/Credentials Signature</span>
+                            </label>
+                            <div id="provider_signature_section" class="hidden grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                                <div>
+                                    <label class="form-label text-sm">Provider/Credentials Signature</label>
+                                    <div class="signature-line"></div>
+                                </div>
+                                <div>
+                                    <label for="sig_provider_name" class="form-label text-sm">Printed Name/Credentials</label>
+                                    <input type="text" id="sig_provider_name" name="sig_provider_name" class="form-input">
+                                </div>
+                                <div>
+                                    <label for="sig_provider_date" class="form-label text-sm">Date</label>
+                                    <input type="date" id="sig_provider_date" name="sig_provider_date" class="form-input">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Supervisor -->
+                        <div>
+                            <label class="flex items-center mb-4">
+                                <input type="checkbox" id="include_supervisor_sig" onchange="toggleSignatureSection('supervisor')" class="h-4 w-4">
+                                <span class="ml-2 font-medium">Include Supervisor/Credentials Signature</span>
+                            </label>
+                            <div id="supervisor_signature_section" class="hidden grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                                <div>
+                                    <label class="form-label text-sm">Supervisor/Credentials Signature</label>
+                                    <div class="signature-line"></div>
+                                </div>
+                                <div>
+                                    <label for="sig_supervisor_name" class="form-label text-sm">Printed Name/Credentials</label>
+                                    <input type="text" id="sig_supervisor_name" name="sig_supervisor_name" class="form-input">
+                                </div>
+                                <div>
+                                    <label for="sig_supervisor_date" class="form-label text-sm">Date</label>
+                                    <input type="date" id="sig_supervisor_date" name="sig_supervisor_date" class="form-input">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Physician -->
+                        <div>
+                            <label class="flex items-center mb-4">
+                                <input type="checkbox" id="include_physician_sig" onchange="toggleSignatureSection('physician')" class="h-4 w-4">
+                                <span class="ml-2 font-medium">Include Physician Signature/Credentials</span>
+                            </label>
+                            <div id="physician_signature_section" class="hidden grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                                <div>
+                                    <label class="form-label text-sm">Physician Signature/Credentials</label>
+                                    <div class="signature-line"></div>
+                                </div>
+                                <div>
+                                    <label for="sig_physician_name" class="form-label text-sm">Printed Name/Credentials</label>
+                                    <input type="text" id="sig_physician_name" name="sig_physician_name" class="form-input">
+                                </div>
+                                <div>
+                                    <label for="sig_physician_date" class="form-label text-sm">Date</label>
+                                    <input type="date" id="sig_physician_date" name="sig_physician_date" class="form-input">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Office Use Only -->
+            <div class="form-field-group bg-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">For Office Use Only</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div><label for="footer_client_name" class="form-label">Clients Name:</label><input type="text" id="footer_client_name" name="footer_client_name" class="form-input bg-gray-100" readonly></div>
+                    <div><label for="footer_dob" class="form-label">DOB:</label><input type="date" id="footer_dob" name="footer_dob" class="form-input bg-gray-100" readonly></div>
+                    <div><label for="footer_record_number" class="form-label">Record Number:</label><input type="text" id="footer_record_number" name="footer_record_number" class="form-input bg-gray-100" readonly></div>
+                </div>
+            </div>
+        </form>
+
+        <!-- Modal for loading saved forms -->
+        <div id="loadModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-label="Load Saved MHITP Data">
+            <div class="modal-content">
+                <h3 class="text-lg font-bold mb-4">Load Saved MHITP Data</h3>
+                <input type="search" id="modalSearch" placeholder="Search by client name..." onkeyup="filterModalItems()" class="w-full p-2 mb-4 border border-gray-300 rounded-md" aria-label="Search saved clients">
+                <div id="savedFormsList" class="modal-body"></div>
+                <div class="mt-4 text-right">
+                    <button onclick="closeModal()" class="form-button bg-gray-500 hover:bg-gray-600">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-container mt-8 flex flex-col items-center gap-4 no-print" aria-label="Form Actions">
+            <div class="flex flex-wrap justify-center gap-4">
+                <button type="button" onclick="displaySavedForms()" class="form-button bg-yellow-500 hover:bg-yellow-600 text-black">Load Saved Data</button>
+                <button type="button" onclick="saveToLocalStorage()" class="form-button bg-green-600 hover:bg-green-700">Save Progress</button>
+                <button type="button" onclick="printForm()" class="form-button bg-blue-600 hover:bg-blue-700">Print Summary</button>
+            </div>
+            <div class="flex flex-wrap justify-center gap-4">
+                <input type="file" id="importFile" onchange="importData(event)" accept=".json" style="display: none;">
+                <button type="button" onclick="document.getElementById('importFile').click()" class="form-button bg-gray-600 hover:bg-gray-700">Import from File</button>
+                <button type="button" onclick="exportData()" class="form-button bg-gray-600 hover:bg-gray-700">Export to File</button>
+            </div>
+            <div>
+                <button type="button" onclick="clearForm()" class="form-button bg-red-600 hover:bg-red-700">Clear Form</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // --- CONFIGURATION ---
+    const FORM_ID = 'mh-itp-v1';
+    const FORM_NAME_PRINT = 'Mental Health Individual Treatment Plan';
+    const FORM_ELEMENT_ID = 'treatmentPlanForm';
+
+    // --- PRINT FUNCTION ---
+ function printForm() {
+    const data = getFormData();
+    const getValue = (key, fallback = '') => data[key] ? (String(data[key]).trim()) : fallback;
+    const getChecked = key => Array.isArray(data[key]) ? data[key] : (data[key] ? [data[key]] : []);
+    const formatDate = (d) => { if (!d || !/^\d{4}-\d{2}-\d{2}$/.test(d)) return ''; const [y,m,dy] = d.split('-'); return `${m}/${dy}/${y}`; };
+    
+    const escapeHtml = (text) => {
+        if (!text) return '&nbsp;';
+        return String(text)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    };
+
+    const createField = (label, value) => `<div class="field"><span class="label">${escapeHtml(label)}</span><div class="value">${escapeHtml(value) || '&nbsp;'}</div></div>`;
+    const createFieldLong = (label, value) => `<div class="field full-width"><span class="label">${escapeHtml(label)}</span><div class="value value-long">${escapeHtml(value) || '&nbsp;'}</div></div>`;
+
+    let mainContent = '';
+
+    // SECTION 1: Client Demographics
+    mainContent += `<h3 class="section-title">Client Demographics</h3>
+    <div class="section-wrapper">
+        <div class="grid-3col">
+            ${createField('Date', formatDate(getValue('date')))}
+            ${createField('Record Number', getValue('recordNumber'))}
+            ${createField('Client Name (Last, First, MI)', getValue('clientName'))}
+            ${createField('DOB', formatDate(getValue('dob')))}
+            ${createField('Age', getValue('age'))}
+            ${createField('Address (Street, City, State, Zip)', getValue('address'))}
+            ${createField('Race', getValue('race'))}
+            ${createField('Gender', getValue('gender'))}
+            ${createField('Phone Number', getValue('phoneNumber'))}
+            ${createField('Phone Type', getValue('phoneType'))}
+        </div>
+    </div>`;
+
+    // SECTION 2: Individual Treatment Plan
+    mainContent += `<h3 class="section-title">Individual Treatment Plan</h3>
+    <div class="section-wrapper">
+        ${createField('See progress note dated', formatDate(getValue('itpProgressNoteDate')) + ' for detailed summary of client\'s participation in ITP development')}
+        ${createFieldLong('Individual Treatment Plan', getValue('itpSummary'))}
+    </div>`;
+
+    // SECTION 3: DSM 5 Diagnosis
+    mainContent += `<h3 class="section-title">DSM 5 Diagnosis</h3>
+    <div class="section-wrapper">
+        <p class="instruction-text">(Include both DE & SUD Assessment)</p>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Diagnosis</th>
+                    <th>Code (DSM 5 and ICD 10)</th>
+                    <th>Date Diagnosis Identified</th>
+                </tr>
+            </thead>
+            <tbody>`;
+    
+    let hasDiagnosis = false;
+    for(let i = 0; i < 10; i++) {
+        if(getValue(`diagnosis_name_${i}`) || getValue(`diagnosis_code_${i}`) || getValue(`diagnosis_date_${i}`)) {
+            hasDiagnosis = true;
+            mainContent += `<tr>
+                <td>${escapeHtml(getValue(`diagnosis_name_${i}`))}</td>
+                <td>${escapeHtml(getValue(`diagnosis_code_${i}`))}</td>
+                <td>${formatDate(getValue(`diagnosis_date_${i}`))}</td>
+            </tr>`;
+        }
+    }
+    if (!hasDiagnosis) {
+        mainContent += '<tr><td colspan="3"><em>No diagnoses provided</em></td></tr>';
+    }
+    mainContent += `</tbody></table></div>`;
+
+    // SECTION 4: Service and Service Frequency - DETAILED VERSION
+    mainContent += `<h3 class="section-title">Service and Service Frequency</h3>
+    <div class="section-wrapper">
+        <table class="service-table">
+            <thead>
+                <tr>
+                    <th style="width: 70%;">Service and Staff Providing Service</th>
+                    <th style="width: 30%;">Service Frequency</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="service-description">
+                        <div class="service-checkbox">[${getChecked('service').includes('Diagnostic Evaluation') ? '✓' : '&nbsp;'}]</div>
+                        <div class="service-details">
+                            <strong>Diagnostic Evaluation</strong><br>
+                            <span class="service-includes">(Includes Diagnostic Evaluation with and without medical, and Diagnostic Update)</span><br>
+                            <span class="service-staff">Licensed professionals as identified in OAC 5122-29-03</span>
+                        </div>
+                    </td>
+                    <td class="frequency-cell">${escapeHtml(getValue('service_freq_diag_eval'))}</td>
+                </tr>
+                <tr>
+                    <td class="service-description">
+                        <div class="service-checkbox">[${getChecked('service').includes('Psychoeducation Support Services') ? '✓' : '&nbsp;'}]</div>
+                        <div class="service-details">
+                            <strong>Psychoeducation Support Services</strong><br>
+                            <span class="service-includes">(Includes Psychosocial Service Rehabilitation, Therapeutic Behavioral Services)</span><br>
+                            <span class="service-staff">QBHS/QMHS, Licensed professionals as identified in OAC 5122-29-03</span>
+                        </div>
+                    </td>
+                    <td class="frequency-cell">${escapeHtml(getValue('service_freq_psycho'))}</td>
+                </tr>
+                <tr>
+                    <td class="service-description">
+                        <div class="service-checkbox">[${getChecked('service').includes('Therapeutic Day Treatment') ? '✓' : '&nbsp;'}]</div>
+                        <div class="service-details">
+                            <strong>Therapeutic Day Treatment (TBS Group Service)</strong><br>
+                            <span class="service-includes">(Mental health day treatment service)</span><br>
+                            <span class="service-staff">QBHS (3 yrs+ Exp.), QBHS BA, QBHS MA, & Licensed professionals as identified in OAC 5122-29-06 Per Diem (Min 2.5 hours)</span>
+                        </div>
+                    </td>
+                    <td class="frequency-cell">${escapeHtml(getValue('service_freq_day_tx'))}</td>
+                </tr>
+                <tr>
+                    <td class="service-description">
+                        <div class="service-checkbox">[${getChecked('service').includes('Psychotherapy') ? '✓' : '&nbsp;'}]</div>
+                        <div class="service-details">
+                            <strong>Psychotherapy</strong><br>
+                            <span class="service-includes">(Includes Psychotherapy for individuals, families, interactive complexity, and crisis)</span><br>
+                            <span class="service-staff">Licensed professionals as identified in OAC 5122-29-03</span>
+                        </div>
+                    </td>
+                    <td class="frequency-cell">${escapeHtml(getValue('service_freq_psychotherapy'))}</td>
+                </tr>
+                <tr>
+                    <td class="service-description">
+                        <div class="service-checkbox">[${getChecked('service').includes('Psychotherapy Group') ? '✓' : '&nbsp;'}]</div>
+                        <div class="service-details">
+                            <strong>Psychotherapy Group</strong><br>
+                            <span class="service-includes">(Includes Psychotherapy for individuals, families, interactive complexity, and crisis)</span><br>
+                            <span class="service-staff">Licensed professionals as identified in OAC 5122-29-03</span>
+                        </div>
+                    </td>
+                    <td class="frequency-cell">${escapeHtml(getValue('service_freq_psychotherapy_group'))}</td>
+                </tr>
+                <tr>
+                    <td class="service-description">
+                        <div class="service-checkbox">[${getChecked('service').includes('Medication Management') ? '✓' : '&nbsp;'}]</div>
+                        <div class="service-details">
+                            <strong>Medication Management</strong><br>
+                            <span class="service-staff">Licensed professionals as identified in OAC 5122-29-03</span>
+                        </div>
+                    </td>
+                    <td class="frequency-cell">${escapeHtml(getValue('service_freq_med_mgmt'))}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>`;
+
+    // SECTION 5: Strengths, Needs, Abilities, Preferences (SNAP)
+    mainContent += `<h3 class="section-title">Strengths, Needs, Abilities, Preferences (SNAP)</h3>
+    <div class="section-wrapper">
+        ${createFieldLong('Client Strengths (What are some things that will help you in treatment?)', getValue('snap_strengths'))}
+        ${createFieldLong('Client Needs (What do you want to learn in treatment?)', getValue('snap_needs'))}
+        ${createFieldLong('Client Abilities (What are some of your personal qualities, skills, or talents that will help you in treatment?)', getValue('snap_abilities'))}
+        ${createFieldLong('Client Preferences (What do you hope to get out of treatment?)', getValue('snap_preferences'))}
+    </div>`;
+
+    // SECTION 6: Problem/Goals/Methods and Target Outcome Rating
+    mainContent += `<h3 class="section-title">Problem/Goals/Methods and Target Outcome Rating</h3>
+    <div class="section-wrapper">
+        <p class="instruction-text">(Either increase, decrease or extinguish frequency, intensity, duration)</p>
+        ${createField('Problem Addressed', getValue('problem_addressed'))}
+        ${createFieldLong('Problem Statement', getValue('problem_statement'))}
+        ${createFieldLong('Comments (describe problem in specific detail)', getValue('problem_comments'))}
+        ${createFieldLong('Goal Statement', getValue('goal_statement'))}
+        
+        <div class="sub-section">
+            <h4>Problem Severity</h4>
+            <p class="instruction-text small">Mild 2-3; Moderate 4-6; Serious 7-8; Severe 9-10</p>
+            <div class="grid-2col">
+                ${createField('Current severity of problem', getValue('current_severity'))}
+                ${createField('Target outcome rating', getValue('target_outcome'))}
+            </div>
+        </div>
+        
+        ${createFieldLong('Goal in Client\'s Own Words', getValue('goal_in_words'))}
+        
+        <div class="grid-2col">
+            ${createField('Date Identified', formatDate(getValue('date_identified')))}
+            ${createField('Target Completion Date', formatDate(getValue('target_completion_date')))}
+        </div>
+        
+        <div class="sub-section">
+            <p class="instruction-text"><strong>All Methods/Interventions provided by Watson eligible provider</strong></p>
+            ${createField('Method 1 (Intervention)', getValue('method_1'))}
+            ${createField('Method 2 (Intervention)', getValue('method_2'))}
+            ${createField('Method 3 (Intervention)', getValue('method_3'))}
+            ${createField('Method 4 (Intervention)', getValue('method_4'))}
+            ${createField('Method 5 (Intervention)', getValue('method_5'))}
+        </div>
+        
+        ${createFieldLong('Additional Information', getValue('problem_additional_info'))}
+    </div>`;
+
+    // SECTION 7: Medical Necessity
+    mainContent += `<h3 class="section-title">Medical Necessity</h3>
+    <div class="section-wrapper">
+        <p class="instruction-text small">Mild 2-3; Moderate 4-6; Serious 7-8; Severe 9-10</p>
+        <div class="grid-2col">
+            ${createField('Severity of Symptoms', getValue('symptom_severity'))}
+            ${createField('Levels of functioning impairment', getValue('functioning_impairment'))}
+        </div>
+        
+        <div class="field full-width">
+            <span class="label">Area of Functioning Impairment:</span>
+            <div class="value checkbox-list">
+                ${getChecked('impairment_area').map(area => `<span class="checkbox-item">${escapeHtml(area)}</span>`).join('') || '<em>None selected</em>'}
+            </div>
+        </div>
+        
+        ${createField('Does the DSM 5 diagnosis with a description of functioning and symptoms?', getValue('dsm_description_match'))}
+    </div>`;
+
+    // SECTION 8: Recommendations and Transition Plan
+    mainContent += `<h3 class="section-title">Recommendations and Transition Plan</h3>
+    <div class="section-wrapper">
+        ${createField('Without treatment, will the client be expected to suffer prolonged, increased or new psychiatric symptoms or impairment of functioning?', getValue('without_treatment_outcome'))}
+        ${createFieldLong('What is the client\'s transition plan?', getValue('transition_plan'))}
+        <p class="instruction-text small"><em>*ITP to be reviewed every annually, at client's request, as clinically indicated, or adding/terminating of a service</em></p>
+    </div>`;
+
+    // SECTION 9: ITP Goal Review
+    mainContent += `<h3 class="section-title">ITP Goal Review</h3>
+    <div class="section-wrapper">
+        ${createFieldLong('Reason for Review', getValue('review_reason'))}
+        ${createField('Progress', getValue('progress'))}
+        ${createField('New Target date (if previous goal continued)', formatDate(getValue('new_target_date')))}
+        ${createField('Previous goal(s) discontinued', getValue('goals_discontinued') ? 'Yes' : 'No')}
+        ${createFieldLong('Remarks regarding client\'s progress', getValue('progress_remarks'))}
+    </div>`;
+
+    // Build Signatures
+    const buildSignatures = () => {
+        let html = '<div class="signature-grid">';
+        
+        // Required signatures
+        html += `<div class="signature-box">
+            <div class="signature-line"></div>
+            <span class="signature-label">Client's Signature: ${escapeHtml(getValue('sig_client_name'))} - Date: ${formatDate(getValue('sig_client_date'))}</span>
+        </div>`;
+        html += `<div class="signature-box">
+            <div class="signature-line"></div>
+            <span class="signature-label">Staff/Credentials: ${escapeHtml(getValue('sig_staff_name'))} - Date: ${formatDate(getValue('sig_staff_date'))}</span>
+        </div>`;
+        
+        // Optional signatures (only show if checkbox was checked)
+        if (getValue('include_parent_sig')) {
+            html += `<div class="signature-box">
+                <div class="signature-line"></div>
+                <span class="signature-label">Parent/Legally Authorized Representative: ${escapeHtml(getValue('sig_parent_name'))} - Date: ${formatDate(getValue('sig_parent_date'))}</span>
+            </div>`;
+        }
+        if (getValue('include_other_sig')) {
+            html += `<div class="signature-box">
+                <div class="signature-line"></div>
+                <span class="signature-label">Other (${escapeHtml(getValue('sig_other_specify'))}): ${escapeHtml(getValue('sig_other_name'))} - Date: ${formatDate(getValue('sig_other_date'))}</span>
+            </div>`;
+        }
+        if (getValue('include_provider_sig')) {
+            html += `<div class="signature-box">
+                <div class="signature-line"></div>
+                <span class="signature-label">Provider/Credentials: ${escapeHtml(getValue('sig_provider_name'))} - Date: ${formatDate(getValue('sig_provider_date'))}</span>
+            </div>`;
+        }
+        if (getValue('include_supervisor_sig')) {
+            html += `<div class="signature-box">
+                <div class="signature-line"></div>
+                <span class="signature-label">Supervisor/Credentials: ${escapeHtml(getValue('sig_supervisor_name'))} - Date: ${formatDate(getValue('sig_supervisor_date'))}</span>
+            </div>`;
+        }
+        if (getValue('include_physician_sig')) {
+            html += `<div class="signature-box">
+                <div class="signature-line"></div>
+                <span class="signature-label">Physician Signature/Credentials: ${escapeHtml(getValue('sig_physician_name'))} - Date: ${formatDate(getValue('sig_physician_date'))}</span>
+            </div>`;
+        }
+        
+        html += '</div>';
+        return html;
+    };
+
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`<html><head><title>${FORM_NAME_PRINT} - ${getValue('clientName')}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body{font-family:'Inter',sans-serif;font-size:9pt;color:#333;margin:0;background-color:#e0e0e0;}
+        .page-content{width:8.5in;background-color:white;margin:1rem auto;padding:0.6in;box-shadow:0 0 10px rgba(0,0,0,0.2);box-sizing:border-box;overflow:hidden;max-width:8.5in;}
+        .header{display:flex;justify-content:space-between;align-items:center;padding-bottom:8px;border-bottom:2px solid #000080;}
+        .logo{width:100px;height:auto;}
+        .header-title{text-align:right;}
+        .header-title h1{margin:0;font-size:12pt;color:#000080;font-weight:700;}
+        .header-title h2{margin:0;font-size:8pt;font-weight:400;color:#555;}
+        .section-title{font-size:10pt;font-weight:600;color:#333;background-color:#f0f5fa;padding:6px 10px;margin:12px 0 8px 0;border-left:3px solid #000080;}
+        .section-wrapper{max-width:100%;overflow:hidden;}
+        .sub-section{margin-top:0.8rem;padding-top:0.8rem;border-top:1px dashed #ccc;}
+        .sub-section h4{font-size:9pt;font-weight:600;color:#333;margin:0 0 6px 0;}
+        .grid-2col{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;max-width:100%;overflow:hidden;}
+        .grid-3col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px 10px;max-width:100%;overflow:hidden;}
+        .field{margin-bottom:8px;overflow:hidden;}
+        .field .label{font-weight:600;font-size:8pt;color:#444;display:block;margin-bottom:2px;}
+        .field .value{background:#f9f9f9;padding:4px 6px;border-radius:2px;border:1px solid #eee;min-height:1.2em;word-wrap:break-word;overflow-wrap:break-word;max-width:100%;font-size:8pt;}
+        .field .value-long{white-space:pre-wrap;min-height:2em;}
+        .full-width{grid-column:1 / -1;}
+        .checkbox-list{display:flex;flex-wrap:wrap;gap:3px;max-width:100%;}
+        .checkbox-item{background-color:#e5e7eb;padding:2px 4px;border-radius:2px;font-size:7pt;max-width:100%;word-break:break-word;}
+        .data-table{width:100%;border-collapse:collapse;margin-top:6px;font-size:7pt;table-layout:fixed;}
+        .data-table th,.data-table td{border:1px solid #ddd;padding:3px;text-align:left;vertical-align:top;word-wrap:break-word;}
+        .data-table th{background-color:#f2f2f2;font-weight:600;}
+        .service-table{width:100%;border-collapse:collapse;margin-top:6px;font-size:7pt;}
+        .service-table th,.service-table td{border:1px solid #ddd;padding:6px;text-align:left;vertical-align:top;}
+        .service-table th{background-color:#f2f2f2;font-weight:600;}
+        .service-description{display:flex;align-items:flex-start;}
+        .service-checkbox{margin-right:8px;font-weight:bold;min-width:15px;}
+        .service-details strong{font-weight:600;color:#333;}
+        .service-includes{color:#666;font-style:italic;font-size:6pt;display:block;margin:2px 0;}
+        .service-staff{color:#555;font-size:6pt;display:block;}
+        .frequency-cell{background:#f9f9f9;font-weight:500;}
+        .instruction-text{font-size:7pt;color:#666;margin:4px 0;font-style:italic;}
+        .instruction-text.small{font-size:6pt;}
+        .signature-section{margin-top:20px;padding-bottom:30px;}
+        .signature-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:end;max-width:100%;}
+        .signature-box{margin-top:12px;max-width:100%;}
+        .signature-line{border-bottom:1px solid #333;height:30px;margin-bottom:3px;}
+        .signature-label{font-size:7pt;color:#555;word-wrap:break-word;}
+        ul{margin:0;padding-left:12px;font-size:7pt;}
+        h4{font-size:8pt;font-weight:600;color:#333;margin:8px 0 4px 0;}
+        em{color:#666;font-style:italic;}
+        *{box-sizing:border-box;max-width:100%;}
+    </style></head><body><div class="page-content">
+    <div class="header">
+        <img src="../images/goldlogo.png" alt="Company Logo" class="logo">
+        <div class="header-title">
+            <h1>${FORM_NAME_PRINT}</h1>
+            <h2>Watson Community Health Center</h2>
+            <div style="margin-top:3px;font-size:8pt;color:#333;text-align:right;">
+                <strong>Client:</strong> ${getValue('clientName') || 'N/A'}<br>
+                <strong>Record #:</strong> ${getValue('recordNumber') || 'N/A'}<br>
+                <strong>DOB:</strong> ${formatDate(getValue('dob')) || 'N/A'}
+            </div>
+        </div>
+    </div>
+    <main>${mainContent}</main>
+    <div class="signature-section">
+        <h3 class="section-title">Signatures</h3>
+        ${buildSignatures()}
+    </div>
+    </div></body></html>`);
+    
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => { printWindow.print(); }, 500);
+}
+
+    // --- UNIVERSAL FUNCTIONS ---
+    function getFormData(){const form=document.getElementById(FORM_ELEMENT_ID);const formData=new FormData(form);const data={formId:FORM_ID,lastModified:new Date().toISOString()};for(const[key,value]of formData.entries()){const cleanKey=key.replace(/\[\]$/,'');if(key.endsWith('[]')){if(!data[cleanKey])data[cleanKey]=[];data[cleanKey].push(value)}else{data[key]=value}}return data}
+    function populateForm(data){const form=document.getElementById(FORM_ELEMENT_ID);form.reset();for(const key in data){if(key==='formId'||key==='lastModified')continue;const elements=form.elements[key]||form.elements[key+'[]'];if(!elements)continue;const value=data[key];const elementList=elements.nodeName?[elements]:Array.from(elements);const firstEl=elementList[0];if(firstEl.type==='checkbox'){const values=Array.isArray(value)?value:[value];elementList.forEach(el=>{el.checked=values.includes(el.value)})}else if(firstEl.type==='radio'){elementList.forEach(el=>{if(el.value===value)el.checked=true})}else{if(firstEl.value!==undefined)firstEl.value=value}}form.querySelectorAll('[onchange]').forEach(el=>el.dispatchEvent(new Event('change')));if(document.getElementById('dob'))document.getElementById('dob').dispatchEvent(new Event('input'))}
+    function saveToLocalStorage(){const data=getFormData();const clientName=data.clientName.trim();if(!clientName){alert('Please enter a Client Name before saving.');return}const key=`savedForm_${FORM_ID}_${clientName}`;try{localStorage.setItem(key,JSON.stringify(data));alert(`Progress for ${clientName} saved successfully!`)}catch(e){if(e.name==='QuotaExceededError'){alert('Error: Browser storage is full. Please export and then delete some older saved forms to make space.')}else{alert('An unknown error occurred while saving.');console.error(e)}}}
+    function displaySavedForms(){const savedFormsList=document.getElementById('savedFormsList');savedFormsList.innerHTML='';let savedItems=[];for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i);if(key.startsWith(`savedForm_${FORM_ID}_`)){try{const data=JSON.parse(localStorage.getItem(key));savedItems.push({key,data})}catch(e){console.error('Could not parse saved data:',key,e)}}}savedItems.sort((a,b)=>new Date(b.data.lastModified)-new Date(a.data.lastModified));if(savedItems.length===0){savedFormsList.innerHTML=`<p class="text-gray-500">No saved forms found in this browser.</p>`}else{savedItems.forEach(item=>{const clientName=item.data.clientName||'Unnamed';const lastModified=new Date(item.data.lastModified).toLocaleString();const itemDiv=document.createElement('div');itemDiv.className='modal-item';itemDiv.innerHTML=`<div class="flex-grow" onclick="loadSelectedForm('${item.key}')"><strong class="item-name">${clientName}</strong><br><small>Last saved: ${lastModified}</small></div><button onclick="deleteSavedForm(event,'${item.key}')"class="delete-btn">Delete</button>`;savedFormsList.appendChild(itemDiv)})}document.getElementById('loadModal').classList.remove('hidden');document.getElementById('modalSearch').value='';document.getElementById('modalSearch').focus()}
+    function filterModalItems(){const searchTerm=document.getElementById('modalSearch').value.toLowerCase();document.querySelectorAll('.modal-item').forEach(item=>{const name=item.querySelector('.item-name').textContent.toLowerCase();item.style.display=name.includes(searchTerm)?'flex':'none'})}
+    function loadSelectedForm(key){const data=JSON.parse(localStorage.getItem(key));populateForm(data);closeModal();alert(`Data for ${data.clientName} has been loaded.`)}
+    function deleteSavedForm(event,key){event.stopPropagation();const data=JSON.parse(localStorage.getItem(key));const clientName=data.clientName||'this entry';if(confirm(`Are you sure you want to permanently delete the saved data for ${clientName}? This cannot be undone.`)){localStorage.removeItem(key);displaySavedForms();filterModalItems()}}
+    function closeModal(){document.getElementById('loadModal').classList.add('hidden')}
+    function parseClientName(nameStr){let[lastName,firstName]=['Unknown','Client'];if(nameStr){if(nameStr.includes(',')){[lastName,firstName]=nameStr.split(',',2).map(s=>s.trim())}else{const parts=nameStr.trim().split(' ');lastName=parts.pop()||'Unknown';firstName=parts.join(' ')||'Client'}}return[lastName,firstName]}
+    function exportData(){const data=getFormData();if(!data.clientName.trim()){alert('Please enter a Client Name before exporting.');return}const[lastName,firstName]=parseClientName(data.clientName);const filename=`${formatDate(data.date)||'NODATE'}_${lastName}_${firstName}_${FORM_ID}.json`;const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download=filename;link.click();URL.revokeObjectURL(link.href)}
+    function importData(event){const file=event.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=function(e){try{const data=JSON.parse(e.target.result);if(data.formId!==FORM_ID){alert(`Error: Incompatible File\n\nThis file is for the '${data.formId||'Unknown Form'}'. You are currently on the '${FORM_ID}' form.`);return}populateForm(data);alert('Client data imported successfully from file!')}catch(error){alert('An error occurred while reading this file.');console.error("Import Error: ",error)}};reader.readAsText(file);event.target.value=''}
+    function clearForm(){if(confirm("Are you sure you want to clear all fields on this form? This cannot be undone.")){document.getElementById(FORM_ELEMENT_ID).reset();initializeFormDefaults();alert('Form has been cleared.')}}
+
+    // --- FORM-SPECIFIC HELPERS ---
+    function initializeFormDefaults(){if(document.getElementById('date'))document.getElementById('date').valueAsDate=new Date();if(typeof setupInitialDates==='function')setupInitialDates();if(typeof updateAgeAndFooter==='function')updateAgeAndFooter()}
+    function setupInitialDates(){const today=new Date().toISOString().split('T')[0];['date','sig_client_date','sig_staff_date','sig_parent_date','sig_other_date','sig_provider_date','sig_supervisor_date','sig_physician_date'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=today})}
+    function updateAgeAndFooter(){const dobInput=document.getElementById('dob');if(dobInput&&dobInput.value){const dob=new Date(dobInput.value);const today=new Date();let age=today.getFullYear()-dob.getFullYear();const m=today.getMonth()-dob.getMonth();if(m<0||(m===0&&today.getDate()<dob.getDate())){age--}document.getElementById('age').value=age>=0?age:''}else if(document.getElementById('age')){document.getElementById('age').value=''}updateFooterInfo()}
+    function updateFooterInfo(){document.getElementById('footer_client_name').value=document.getElementById('clientName').value;document.getElementById('footer_dob').value=document.getElementById('dob').value;document.getElementById('footer_record_number').value=document.getElementById('recordNumber').value}
+    function updateNavigation(){const navContainer=document.getElementById('form-nav');if(!navContainer)return;navContainer.innerHTML='';document.querySelectorAll('div[id^="section-"]').forEach(section=>{const title=section.querySelector('h3')?.textContent;if(title){const link=document.createElement('a');link.href=`#${section.id}`;link.className='nav-link';link.textContent=title;navContainer.appendChild(link)}})}
+    function buildDiagnosisGrid(){const diagnosisGrid=document.getElementById('diagnosis-grid');if(!diagnosisGrid)return;for(let i=0;i<10;i++){const row=document.createElement('div');row.className='grid grid-cols-1 md:grid-cols-3 gap-4';row.innerHTML=`<div><input type="text" name="diagnosis_name_${i}" class="form-input"></div><div><input type="text" name="diagnosis_code_${i}" class="form-input"></div><div><input type="date" name="diagnosis_date_${i}" class="form-input"></div>`;diagnosisGrid.appendChild(row)}}
+    function toggleSignatureSection(sectionType){const checkbox=document.getElementById(`include_${sectionType}_sig`);const section=document.getElementById(`${sectionType}_signature_section`);if(checkbox.checked){section.classList.remove('hidden')}else{section.classList.add('hidden');const inputs=section.querySelectorAll('input');inputs.forEach(input=>input.value='')}}
+
+    // PAGE INITIALIZATION
+    document.addEventListener('DOMContentLoaded', () => {
+        if(document.getElementById('modalSearch')) document.getElementById('modalSearch').addEventListener('keyup', filterModalItems);
+        ['dob', 'clientName', 'recordNumber'].forEach(id => { const el = document.getElementById(id); if (el) el.addEventListener('input', updateAgeAndFooter); });
+
+        buildDiagnosisGrid();
+        updateNavigation();
+        initializeFormDefaults();
+        setupInitialDates();
+    });
+
+    document.getElementById('treatmentPlanForm').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            // Allow Enter in textarea and on buttons
+            if (
+                e.target.tagName !== 'TEXTAREA' &&
+                e.target.type !== 'submit' &&
+                e.target.type !== 'button'
+            ) {
+                e.preventDefault();
+                return false;
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

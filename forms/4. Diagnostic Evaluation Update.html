@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnostic Evaluation Update</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="../images/favicon.png">
+    <meta name="description" content="Diagnostic Evaluation Update form for Watson Community Health Center. Save, export, and print legally binding clinical documents securely and accessibly.">
+    <meta property="og:title" content="Diagnostic Evaluation Update - Watson Community Health Center">
+    <meta property="og:description" content="Comprehensive diagnostic evaluation update form with save/export/print features for clinical use.">
+    <meta property="og:image" content="../images/goldlogo.png">
+    <meta property="og:type" content="website">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .signature-line { height: 2.5rem; border-bottom: 1px solid #4b5563; margin-top: 0.25rem; }
+        .form-container { max-width: 960px; margin: 2rem auto; padding: 2rem; background-color: #ffffff; border-radius: 1.5rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+        .form-field-group { border-radius: 0.75rem; padding: 1.5rem; background-color: #f9fafb; border: 1px solid #e5e7eb; }
+        .form-label { font-weight: 600; color: #111827; margin-bottom: 0.5rem; display: block; }
+        .form-input, .form-textarea, .form-select { display: block; width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; background-color: #ffffff; transition: all 0.2s; }
+        .form-input:focus, .form-textarea:focus, .form-select:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.5); }
+        .form-input:read-only { background-color: #f3f4f6; cursor: not-allowed; }
+        .form-button { display: inline-block; padding: 0.75rem 1.5rem; font-weight: 600; color: #ffffff; border-radius: 0.75rem; transition: all 0.2s; cursor: pointer; border: none; }
+        .form-button:hover, .form-button:focus { opacity: 0.9; outline: 2px solid #d3af37; outline-offset: 2px;}
+        .nav-link { display: block; padding: 0.5rem 1rem; border-radius: 0.5rem; margin-bottom: 0.5rem; font-weight: 500; color: #4b5563; background-color: #f3f4f6; transition: background-color 0.2s; }
+        .nav-link:hover, .nav-link:focus { background-color: #e5e7eb; outline: 2px solid #d3af37; outline-offset: 2px;}
+        .nav-container { position: fixed; top: 2rem; left: 2rem; width: 250px; z-index: 10; display: none; max-height: calc(100vh - 4rem); overflow-y: auto; padding-right: 8px;}
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+        .modal-content { background: white; padding: 1.5rem; border-radius: 1rem; max-width: 600px; width: 90%; max-height: 80vh; display: flex; flex-direction: column; }
+        .modal-body { overflow-y: auto; }
+        .modal-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; border: 1px solid #e5e7eb; border-radius: 0.5rem; margin-bottom: 0.5rem; cursor: pointer; transition: background-color 0.2s; }
+        .modal-item:hover { background-color: #f3f4f6; }
+        .delete-btn { background-color: #ef4444; color: white; border: none; padding: 0.25rem 0.75rem; border-radius: 0.5rem; font-size: 0.75rem; cursor: pointer; }
+        .delete-btn:hover { background-color: #dc2626; }
+        .asam-grid { display: grid; gap: 0.5rem; align-items: center; grid-template-columns: minmax(200px, 2fr) repeat(4, 1fr); }
+        .asam-grid > div { padding: 0.5rem; text-align: center; }
+        .asam-grid > div:first-child { text-align: left; font-weight: 500; }
+        .asam-header { font-weight: 600; font-size: 0.875rem; background-color: #f3f4f6; border-radius: 0.5rem; }
+        .sr-only { position: absolute!important; width: 1px!important; height: 1px!important; padding: 0!important; margin: -1px!important; overflow: hidden!important; clip: rect(0,0,0,0)!important; white-space: nowrap!important; border: 0!important; }
+        .focus\:not-sr-only:focus { position: static!important; width: auto!important; height: auto!important; margin: 0!important; overflow: visible!important; clip: auto!important; white-space: normal!important; }
+        @media print {
+          body { background-color: #fff !important; }
+          .no-print { display: none !important; }
+          .print-only { display: block !important; }
+          .form-container { box-shadow: none !important; margin: 0 !important; padding: 0.5in !important; border-radius: 0; }
+          .page-break { page-break-before: always; }
+        }
+        @media (min-width: 1024px) { .nav-container { display: block; } .form-container { margin-left: 280px; } }
+    </style>
+</head>
+<body>
+    <!-- Accessibility: skip to content link for screen readers -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-yellow-200 p-2 rounded z-50">Skip to main content</a>
+    
+    <!-- Sidebar Navigation with ARIA -->
+    <div class="nav-container" role="navigation" aria-label="Form Section Navigation">
+        <a href="../index.html" class="nav-link font-bold text-blue-600 hover:bg-blue-100 mb-4" tabindex="0">← Forms Home</a>
+        <h3 class="font-bold text-gray-900 mb-2">Form Sections</h3>
+        <nav id="form-nav" aria-label="Section links"></nav>
+    </div>
+
+    <div id="main-content" class="form-container" role="main" tabindex="-1">
+        <h1 class="text-3xl font-bold text-center text-gray-900 mb-2">Watson Community Health Centre</h1>
+        <h2 class="text-xl font-medium text-center text-gray-600 mb-8">Diagnostic Evaluation Update and SUD Assessment and ASAM Level of Care</h2>
+        
+        <form id="deuForm" onsubmit="return false;" aria-label="Diagnostic Evaluation Update Form">
+            <input type="hidden" id="formId" value="deu-v1">
+                        <!-- Section 1: Demographic Information -->
+            <div id="section-demographics" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Demographic Information</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="date" class="form-label">Date</label>
+                            <input type="date" id="date" name="date" class="form-input" required>
+                        </div>
+                        <div>
+                            <label for="recordNumber" class="form-label">Record # (last four digits of SS#)</label>
+                            <input type="text" id="recordNumber" name="recordNumber" class="form-input" placeholder="8899" pattern="\d{4}" maxlength="4" required>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="clientName" class="form-label">Client Name</label>
+                            <input type="text" id="clientName" name="clientName" class="form-input" placeholder="Last, First, MI" required>
+                        </div>
+                        <div>
+                            <label for="dob" class="form-label">DOB</label>
+                            <input type="date" id="dob" name="dob" class="form-input" required>
+                        </div>
+                        <div>
+                            <label for="age" class="form-label">Age</label>
+                            <input type="number" id="age" name="age" class="form-input" readonly>
+                        </div>
+                        <div>
+                            <label for="raceEthnicity" class="form-label">Race or Ethnicity</label>
+                            <select id="raceEthnicity" name="raceEthnicity" class="form-select">
+                                <option value="">Select...</option>
+                                <option value="American Indian or Alaska Native">American Indian or Alaska Native</option>
+                                <option value="Asian">Asian</option>
+                                <option value="Black or African American">Black or African American</option>
+                                <option value="Hispanic or Latino">Hispanic or Latino</option>
+                                <option value="Native Hawaiian or Other Pacific Islander">Native Hawaiian or Other Pacific Islander</option>
+                                <option value="White">White</option>
+                                <option value="Two or More Races">Two or More Races</option>
+                                <option value="Other">Other</option>
+                                <option value="Prefer not to say">Prefer not to say</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="gender" class="form-label">Gender (per insurance carrier)</label>
+                            <select id="gender" name="gender" class="form-select">
+                                <option value="">Select...</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Non-binary">Non-binary</option>
+                                <option value="Transgender Male">Transgender Male</option>
+                                <option value="Transgender Female">Transgender Female</option>
+                                <option value="Gender non-conforming">Gender non-conforming</option>
+                                <option value="Other">Other</option>
+                                <option value="Prefer not to say">Prefer not to say</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="sexualOrientation" class="form-label">Sexual/Romantic Orientation</label>
+                            <input type="text" id="sexualOrientation" name="sexualOrientation" class="form-input">
+                        </div>
+                        <div>
+                            <label for="preferredPronoun" class="form-label">Preferred pronoun</label>
+                            <select id="preferredPronoun" name="preferredPronoun" class="form-select">
+                                <option value="">Select...</option>
+                                <option value="He/Him/His">He/Him/His</option>
+                                <option value="She/Her/Hers">She/Her/Hers</option>
+                                <option value="They/Them/Theirs">They/Them/Theirs</option>
+                                <option value="Ze/Zir/Zirs">Ze/Zir/Zirs</option>
+                                <option value="Other">Other</option>
+                                <option value="Prefer not to say">Prefer not to say</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="address" class="form-label">Address</label>
+                            <input type="text" id="address" name="address" class="form-input" placeholder="Street, City, State, Zip">
+                        </div>
+                        <div>
+                            <label for="phoneNumber" class="form-label">Phone</label>
+                            <input type="tel" id="phoneNumber" name="phoneNumber" class="form-input" placeholder="(555) 555-5555">
+                        </div>
+                        <div>
+                            <label for="demographics_additional_info" class="form-label">Additional Information</label>
+                            <input type="text" id="demographics_additional_info" name="demographics_additional_info" class="form-input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: Diagnostic Evaluation Update -->
+            <div id="section-update-reason" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Diagnostic Evaluation Update</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="update_reason" class="form-label">Reason for update</label>
+                            <select id="update_reason" name="update_reason" class="form-select">
+                                <option value="">Select...</option>
+                                <option value="Annual Review">Annual Review</option>
+                                <option value="Significant Change in Status">Significant Change in Status</option>
+                                <option value="Hospitalization">Post-Hospitalization</option>
+                                <option value="Client Request">Client Request</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="last_de_date" class="form-label">Date of last DE/DA</label>
+                            <input type="date" id="last_de_date" name="last_de_date" class="form-input">
+                        </div>
+                        <div>
+                            <label for="de_update_additional_info" class="form-label">Additional Information</label>
+                            <textarea id="de_update_additional_info" name="de_update_additional_info" class="form-textarea h-24"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3: Presenting Problem -->
+            <div id="section-presenting-problem" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Presenting Problem</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <label for="presentingProblem" class="form-label">What led you to come in here today? What do you need help with?</label>
+                            <textarea id="presentingProblem" name="presentingProblem" class="form-textarea h-32"></textarea>
+                        </div>
+                        <div>
+                            <label for="treatmentHope" class="form-label">What does client hope to get from treatment?</label>
+                            <textarea id="treatmentHope" name="treatmentHope" class="form-textarea h-24"></textarea>
+                        </div>
+                        <div>
+                            <label for="severity" class="form-label">How severe on a scale of 1-10? <span id="severityValue" class="font-bold ml-2">5</span></label>
+                            <input type="range" id="severity" name="severity" min="1" max="10" value="5" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                        </div>
+                        <div>
+                            <label for="presenting_problem_additional_info" class="form-label">Additional Information</label>
+                            <textarea id="presenting_problem_additional_info" name="presenting_problem_additional_info" class="form-textarea h-24"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 4: Previous DSM 5 Diagnosis -->
+            <div id="section-previous-diagnosis" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Previous DSM 5 Diagnosis</h3>
+                    <div class="grid grid-cols-3 gap-4 font-semibold text-sm">
+                        <div>Diagnosis</div>
+                        <div>Code</div>
+                        <div>Date Identified</div>
+                    </div>
+                    <div id="previous-diagnosis-grid" class="space-y-2"></div>
+                </div>
+            </div>
+
+            <!-- Section 5: Updated Psychiatric History -->
+            <div id="section-psychiatric-history" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Updated Psychiatric History</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <label for="psych_dx_words" class="form-label">Diagnosis (in client's words, their explanations)</label>
+                            <textarea id="psych_dx_words" name="psych_dx_words" class="form-textarea h-24"></textarea>
+                        </div>
+                        <div>
+                            <label class="form-label">Most recent hospitalization</label>
+                            <div class="flex flex-wrap gap-x-4 gap-y-2">
+                                <label><input type="radio" name="most_recent_hosp" value="Last month"> Last month</label>
+                                <label><input type="radio" name="most_recent_hosp" value="6 months"> 6 months</label>
+                                <label><input type="radio" name="most_recent_hosp" value="Past year"> Past year</label>
+                                <label><input type="radio" name="most_recent_hosp" value="2 years"> 2 years</label>
+                                <label><input type="radio" name="most_recent_hosp" value="2 years plus"> 2 years plus</label>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="hosp_where" class="form-label">Where?</label>
+                            <input type="text" id="hosp_where" name="hosp_where" class="form-input">
+                        </div>
+                        <div>
+                            <label class="form-label">Length of stay</label>
+                            <div class="flex flex-wrap gap-x-4 gap-y-2">
+                                <label><input type="radio" name="hosp_length" value="1-2 weeks"> 1-2 weeks</label>
+                                <label><input type="radio" name="hosp_length" value="2-4 weeks"> 2-4 weeks</label>
+                                <label><input type="radio" name="hosp_length" value="Month+"> Month+</label>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="hosp_reason" class="form-label">What was going on?</label>
+                            <textarea id="hosp_reason" name="hosp_reason" class="form-textarea h-24"></textarea>
+                        </div>
+                        <div>
+                            <label for="psych_history_additional_info" class="form-label">Additional Information</label>
+                            <textarea id="psych_history_additional_info" name="psych_history_additional_info" class="form-textarea h-24"></textarea>
+                        </div>
+                        <div>
+                            <label class="form-label">Are you currently receiving Psychiatric or Community Mental Health treatment outside of agency?</label>
+                            <div class="flex items-center space-x-4">
+                                <label><input type="radio" name="outside_treatment" value="No" checked onchange="toggleDetails(this, 'outside_treatment_details', false)"> No</label>
+                                <label><input type="radio" name="outside_treatment" value="Yes" onchange="toggleDetails(this, 'outside_treatment_details', true)"> Yes (complete ROI)</label>
+                            </div>
+                        </div>
+                        <div id="outside_treatment_details" class="hidden space-y-4">
+                            <div>
+                                <label for="outside_provider_where" class="form-label">Where?</label>
+                                <input type="text" id="outside_provider_where" name="outside_provider_where" class="form-input">
+                            </div>
+                            <div>
+                                <label for="outside_provider_name" class="form-label">Name of provider</label>
+                                <input type="text" id="outside_provider_name" name="outside_provider_name" class="form-input">
+                            </div>
+                            <div>
+                                <label for="outside_provider_additional_info" class="form-label">Additional Information</label>
+                                <textarea id="outside_provider_additional_info" name="outside_provider_additional_info" class="form-textarea h-24"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 6: Substance Use History -->
+            <div id="section-substance-use" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Substance Use History</h3>
+                    <p class="text-sm text-gray-600 mb-4">Severity Levels = Presence of the # of DSM criteria symptoms Mild = 2–3, Moderate = 4-5, Severe = 6 or more symptoms</p>
+                    <div id="substance-use-container"></div>
+                </div>
+            </div>
+
+            <!-- Section 7: CAGE & Treatment History -->
+            <div id="section-cage-treatment" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">CAGE Questions & Treatment History</h3>
+                    <h4 class="text-md font-semibold text-gray-800 mb-4">CAGE Questions</h4>
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center">
+                            <p>Have you ever felt you should cut down on your drinking/drug use?</p>
+                            <div class="flex items-center space-x-4">
+                                <label><input type="radio" name="cage_cutdown" value="No"> No</label>
+                                <label><input type="radio" name="cage_cutdown" value="Yes"> Yes</label>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <p>Have people annoyed you by criticizing your drinking/drug use?</p>
+                            <div class="flex items-center space-x-4">
+                                <label><input type="radio" name="cage_annoyed" value="No"> No</label>
+                                <label><input type="radio" name="cage_annoyed" value="Yes"> Yes</label>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <p>Have you ever felt bad/guilty about your drug use?</p>
+                            <div class="flex items-center space-x-4">
+                                <label><input type="radio" name="cage_guilty" value="No"> No</label>
+                                <label><input type="radio" name="cage_guilty" value="Yes"> Yes</label>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <p>Have you ever had to drink/used drugs first thing in the morning to steady your nerves or help you to feel better?</p>
+                            <div class="flex items-center space-x-4">
+                                <label><input type="radio" name="cage_eyeopener" value="No"> No</label>
+                                <label><input type="radio" name="cage_eyeopener" value="Yes"> Yes</label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="my-6 border-gray-300">
+                    <h4 class="text-md font-semibold text-gray-800 mb-4">Treatment History</h4>
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-5 gap-4 items-center">
+                            <label>Treatment History</label>
+                            <label></label>
+                            <label>Where</label>
+                            <label>When</label>
+                            <label>How Long</label>
+                        </div>
+                        <div class="grid grid-cols-5 gap-4 items-center">
+                            <label>Outpatient</label>
+                            <div class="flex items-center space-x-4">
+                                <label><input type="radio" name="tx_outpatient" value="No"> No</label>
+                                <label><input type="radio" name="tx_outpatient" value="Yes"> Yes</label>
+                            </div>
+                            <input type="text" name="tx_outpatient_where" class="form-input">
+                            <input type="text" name="tx_outpatient_when" class="form-input">
+                            <input type="text" name="tx_outpatient_howlong" class="form-input">
+                        </div>
+                        <div class="grid grid-cols-5 gap-4 items-center">
+                            <label>Inpatient</label>
+                            <div class="flex items-center space-x-4">
+                                <label><input type="radio" name="tx_inpatient" value="No"> No</label>
+                                <label><input type="radio" name="tx_inpatient" value="Yes"> Yes</label>
+                            </div>
+                            <input type="text" name="tx_inpatient_where" class="form-input">
+                            <input type="text" name="tx_inpatient_when" class="form-input">
+                            <input type="text" name="tx_inpatient_howlong" class="form-input">
+                        </div>
+                        <div class="grid grid-cols-5 gap-4 items-center">
+                            <label>Detox unit</label>
+                            <div class="flex items-center space-x-4">
+                                <label><input type="radio" name="tx_detox" value="No"> No</label>
+                                <label><input type="radio" name="tx_detox" value="Yes"> Yes</label>
+                            </div>
+                            <input type="text" name="tx_detox_where" class="form-input">
+                            <input type="text" name="tx_detox_when" class="form-input">
+                            <input type="text" name="tx_detox_howlong" class="form-input">
+                        </div>
+                        <div class="grid grid-cols-5 gap-4 items-center">
+                            <label>AA/NA/CA, etc.</label>
+                            <div class="flex items-center space-x-4">
+                                <label><input type="radio" name="tx_selfhelp" value="No"> No</label>
+                                <label><input type="radio" name="tx_selfhelp" value="Yes"> Yes</label>
+                            </div>
+                            <input type="text" name="tx_selfhelp_where" class="form-input">
+                            <input type="text" name="tx_selfhelp_when" class="form-input">
+                            <input type="text" name="tx_selfhelp_howlong" class="form-input">
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <label class="form-label">Do you have a sponsor?</label>
+                        <div class="flex items-center space-x-4">
+                            <label><input type="radio" name="sponsor" value="No" checked> No</label>
+                            <label><input type="radio" name="sponsor" value="Yes"> Yes, Name/Phone:</label>
+                            <input type="text" name="sponsor_name_phone" class="form-input">
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <label for="tx_additional_info" class="form-label">Additional information</label>
+                        <textarea id="tx_additional_info" name="tx_additional_info" class="form-textarea h-24"></textarea>
+                    </div>
+                    <div class="mt-4">
+                        <label for="client_insight" class="form-label">Client insight to SU issues: (how do you feel about your substance use? – get quote)</label>
+                        <textarea id="client_insight" name="client_insight" class="form-textarea h-24"></textarea>
+                    </div>
+                    <div class="mt-4">
+                        <label class="form-label">Clinical focus based on observation of client's insight level: (choose one):</label>
+                        <div class="flex flex-col space-y-2">
+                            <label><input type="radio" name="clinical_focus" value="No history"> No history of drug or alcohol use</label>
+                            <label><input type="radio" name="clinical_focus" value="Engagement"> Engagement (Client unaware of any problem)</label>
+                            <label><input type="radio" name="clinical_focus" value="Persuasion"> Persuasion (Client thinks may have problem)</label>
+                            <label><input type="radio" name="clinical_focus" value="Active treatment"> Active treatment (Client recognizes has a problem)</label>
+                            <label><input type="radio" name="clinical_focus" value="Relapse prevention"> Relapse prevention (Client focuses on sober strategies)</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 8: Updated Psychosocial Functioning -->
+            <div id="section-psychosocial" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Updated Psychosocial Functioning</h3>
+                    <p class="text-sm text-gray-600 mb-4">Since the completion of the last DE, has there been a change in:</p>
+                    <div id="psychosocial-functioning-container" class="space-y-4"></div>
+                </div>
+            </div>
+
+            <!-- Section 9: Updated Psychiatric Symptoms Checklist -->
+            <div id="section-psychiatric-symptoms" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Updated Psychiatric Symptoms Checklist</h3>
+                    <p class="text-sm text-gray-600 mb-4">Since the completion of the last DE, has there been a change in:</p>
+                    <div id="psychiatric-symptoms-container" class="space-y-4"></div>
+                </div>
+            </div>
+
+            <!-- Section 10: Mental Status Exam -->
+            <div id="section-mse" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Mental Status Exam</h3>
+                    <div id="mse-container"></div>
+                </div>
+            </div>
+
+            <!-- Section 11: Narrative Summary -->
+            <div id="section-narrative" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Narrative Summary of Updated Information</h3>
+                    <label for="narrative_summary" class="form-label">Narrative Summary of all of the above:</label>
+                    <textarea id="narrative_summary" name="narrative_summary" class="form-textarea h-64"></textarea>
+                </div>
+            </div>
+
+            <!-- Section 12: Diagnostic Impression -->
+            <div id="section-diagnostic-impression" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Diagnostic Impression</h3>
+                    <label for="diagnostic_impression" class="form-label">Diagnostic Impression (DSM 5 diagnosis and ICD 10 Code):</label>
+                    <textarea id="diagnostic_impression" name="diagnostic_impression" class="form-textarea h-32"></textarea>
+                </div>
+            </div>
+
+            <!-- Section 13: Recommended Services -->
+            <div id="section-recommended-services" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Recommended Services</h3>
+                    <div class="space-y-3">
+                        <label class="flex items-start"><input type="checkbox" name="recommended_services[]" value="Diagnostic Evaluation"> <span class="ml-3"><span class="font-semibold">Diagnostic Evaluation</span> <span class="text-gray-600 text-sm">(Includes Initial Diagnostic Evaluation and Diagnostic Update)</span></span></label>
+                        <label class="flex items-start"><input type="checkbox" name="recommended_services[]" value="IHBT"> <span class="ml-3"><span class="font-semibold">IHBT</span> <span class="text-gray-600 text-sm">(Intensive Home-Based Treatment)</span></span></label>
+                        <label class="flex items-start"><input type="checkbox" name="recommended_services[]" value="ACT"> <span class="ml-3"><span class="font-semibold">ACT</span> <span class="text-gray-600 text-sm">(Assertive Community Treatment)</span></span></label>
+                        <label class="flex items-start"><input type="checkbox" name="recommended_services[]" value="Psychoeducation Support Services"> <span class="ml-3"><span class="font-semibold">Psychoeducation Support Services</span> <span class="text-gray-600 text-sm">(Includes Psychosocial Service Rehabilitation, Therapeutic Behavioral Services - individual, families, and crisis)</span></span></label>
+                        <label class="flex items-start"><input type="checkbox" name="recommended_services[]" value="Psychotherapy"> <span class="ml-3"><span class="font-semibold">Psychotherapy</span> <span class="text-gray-600 text-sm">(Includes Psychotherapy for individuals, families, interactive complexity, and crisis)</span></span></label>
+                        <label class="flex items-start"><input type="checkbox" name="recommended_services[]" value="Psychopharmacological Services"> <span class="ml-3"><span class="font-semibold">Psychopharmacological Services</span> <span class="text-gray-600 text-sm">(Includes Psychiatric Evaluation, Psychopharmacological Management Services)</span></span></label>
+                        <label class="flex items-start"><input type="checkbox" name="recommended_services[]" value="Substance Use Disorder Services"> <span class="ml-3"><span class="font-semibold">Substance Use Disorder Services</span> <span class="text-gray-600 text-sm">(Includes SUD Assessment; SUD Psychotherapy for individuals, groups, and families)</span></span></label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 14: ASAM -->
+            <div id="section-asam" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">ASAM Level of Care</h3>
+                    <div id="asam-grid-container" class="overflow-x-auto">
+                        <div class="asam-grid">
+                            <div class="asam-header">ASAM Level</div>
+                            <div class="asam-header">Level 1</div>
+                            <div class="asam-header">Level 2.1</div>
+                            <div class="asam-header">Level 3.1</div>
+                            <div class="asam-header">Level 3.5</div>
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <label class="form-label">ASAM Recommended Level of Care</label>
+                        <div class="flex flex-wrap gap-x-6 gap-y-2">
+                            <label><input type="radio" name="asam_recommendation" value="1"> Level 1 Outpatient</label>
+                            <label><input type="radio" name="asam_recommendation" value="2.1"> Level 2.1 Intensive Outpatient</label>
+                            <label><input type="radio" name="asam_recommendation" value="3.1"> Level 3.1 Intensive Outpatient w/Residential Support</label>
+                            <label><input type="radio" name="asam_recommendation" value="3.5"> Level 3.5 Non-Medical Community Residential</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 15: Strengths/Assets/Resources -->
+            <div id="section-strengths" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Strengths/Assets/Resources</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Strong support system"> <span class="ml-2 text-sm">Strong support system</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Self-confident"> <span class="ml-2 text-sm">Self-confident</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Decisive"> <span class="ml-2 text-sm">Decisive</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Flexible"> <span class="ml-2 text-sm">Flexible</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Survivor"> <span class="ml-2 text-sm">Survivor</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Resourceful"> <span class="ml-2 text-sm">Resourceful</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Team player"> <span class="ml-2 text-sm">Team player</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Independent"> <span class="ml-2 text-sm">Independent</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Respects self"> <span class="ml-2 text-sm">Respects self</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Good social skills"> <span class="ml-2 text-sm">Good social skills</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Insightful"> <span class="ml-2 text-sm">Insightful</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Committed"> <span class="ml-2 text-sm">Committed</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Compassionate"> <span class="ml-2 text-sm">Compassionate</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Transparent"> <span class="ml-2 text-sm">Transparent</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Educated"> <span class="ml-2 text-sm">Educated</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Intelligent"> <span class="ml-2 text-sm">Intelligent</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Logical"> <span class="ml-2 text-sm">Logical</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Caring"> <span class="ml-2 text-sm">Caring</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Sense of humor"> <span class="ml-2 text-sm">Sense of humor</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Honest"> <span class="ml-2 text-sm">Honest</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Resilient"> <span class="ml-2 text-sm">Resilient</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Organized"> <span class="ml-2 text-sm">Organized</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Internal strength"> <span class="ml-2 text-sm">Internal strength</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Curious"> <span class="ml-2 text-sm">Curious</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Goal-oriented"> <span class="ml-2 text-sm">Goal-oriented</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Strong-willed"> <span class="ml-2 text-sm">Strong-willed</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Can multi-task"> <span class="ml-2 text-sm">Can multi-task</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Diplomatic"> <span class="ml-2 text-sm">Diplomatic</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Employable"> <span class="ml-2 text-sm">Employable</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Emotional control"> <span class="ml-2 text-sm">Emotional control</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Self-sufficient"> <span class="ml-2 text-sm">Self-sufficient</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Enjoys learning new things"> <span class="ml-2 text-sm">Enjoys learning new things</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Creative"> <span class="ml-2 text-sm">Creative</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Disciplined"> <span class="ml-2 text-sm">Disciplined</span></label>
+                        <label class="flex items-center"><input type="checkbox" name="strengths[]" value="Expressive"> <span class="ml-2 text-sm">Expressive</span></label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 16: Skills Deficits -->
+            <div id="section-skills-deficits" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Skills Deficits/Skills Training/Community Support Needs</h3>
+                    <p class="text-sm text-gray-600 mb-6">(check all applicable skills deficits, skills training, and/or community support needs identified)</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="p-4 border rounded-lg bg-white">
+                            <label class="flex items-start">
+                                <input type="checkbox" name="skills_deficits[]" value="Treatment Planning">
+                                <span class="ml-3 text-sm"><span class="font-semibold">Treatment planning.</span> Participating in and utilizing strengths-based treatment/planning...</span>
+                            </label>
+                        </div>
+                        <div class="p-4 border rounded-lg bg-white">
+                            <label class="flex items-start">
+                                <input type="checkbox" name="skills_deficits[]" value="Identification of strategies">
+                                <span class="ml-3 text-sm"><span class="font-semibold">Identification of strategies or treatment options.</span> Assisting the individual and family members...</span>
+                            </label>
+                        </div>
+                        <div class="p-4 border rounded-lg bg-white">
+                            <label class="flex items-start">
+                                <input type="checkbox" name="skills_deficits[]" value="Crisis prevention">
+                                <span class="ml-3 text-sm"><span class="font-semibold">Crisis prevention and amelioration.</span> Assisting the individual with effectively responding to or avoiding identified precursors...</span>
+                            </label>
+                        </div>
+                        <div class="p-4 border rounded-lg bg-white">
+                            <label class="flex items-start">
+                                <input type="checkbox" name="skills_deficits[]" value="Restoration of social skills">
+                                <span class="ml-3 text-sm"><span class="font-semibold">Restoration of social skills.</span> Rehabilitation and support with the restoration of social and interpersonal skills...</span>
+                            </label>
+                        </div>
+                        <div class="p-4 border rounded-lg bg-white">
+                            <label class="flex items-start">
+                                <input type="checkbox" name="skills_deficits[]" value="Restoration of daily functioning">
+                                <span class="ml-3 text-sm"><span class="font-semibold">Restoration of daily functioning.</span> Assisting the individual to restore daily functioning...</span>
+                            </label>
+                        </div>
+                        <div class="p-4 border rounded-lg bg-white">
+                            <label class="flex items-start">
+                                <input type="checkbox" name="skills_deficits[]" value="Developing and providing solution focused interventions">
+                                <span class="ml-3 text-sm"><span class="font-semibold">Developing and providing solution focused interventions</span> and emotional and behavioral management...</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="skills_evidence" class="form-label">As Evidenced By (describe the specific skill deficits or areas where improvement is needed):</label>
+                        <textarea id="skills_evidence" name="skills_evidence" class="form-textarea h-32"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 17: Signatures -->
+            <div id="section-signatures" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Evaluation Completed By</h3>
+                    <div class="space-y-6 mt-6">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                            <div><label class="form-label text-sm">Clinician Signature</label><div class="signature-line"></div></div>
+                            <div><label for="clinicianPrintedName" class="form-label text-sm">Clinician Printed Name (with credentials)</label><input type="text" id="clinicianPrintedName" name="clinicianPrintedName" class="form-input"></div>
+                            <div><label for="clinicianDate" class="form-label text-sm">Date</label><input type="date" id="clinicianDate" name="clinicianDate" class="form-input"></div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                            <div><label class="form-label text-sm">Supervisor Signature</label><div class="signature-line"></div></div>
+                            <div><label for="supervisorPrintedName" class="form-label text-sm">Supervisor Printed Name (if applicable, with credentials)</label><input type="text" id="supervisorPrintedName" name="supervisorPrintedName" class="form-input"></div>
+                            <div><label for="supervisorDate" class="form-label text-sm">Date</label><input type="date" id="supervisorDate" name="supervisorDate" class="form-input"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Office Use Only -->
+            <div class="form-field-group bg-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">For Office Use Only</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div><label for="footer_client_name" class="form-label">Clients Name:</label><input type="text" id="footer_client_name" name="footer_client_name" class="form-input bg-gray-100" readonly></div>
+                    <div><label for="footer_dob" class="form-label">DOB:</label><input type="date" id="footer_dob" name="footer_dob" class="form-input bg-gray-100" readonly></div>
+                    <div><label for="footer_mrn" class="form-label">MRN:</label><input type="text" id="footer_mrn" name="footer_mrn" class="form-input bg-gray-100" readonly></div>
+                </div>
+            </div>
+        </form>
+
+        <!-- Modal for loading saved forms -->
+        <div id="loadModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-label="Load Saved DEU Data">
+            <div class="modal-content">
+                <h3 class="text-lg font-bold mb-4">Load Saved DEU Data</h3>
+                <input type="search" id="modalSearch" placeholder="Search by client name..." onkeyup="filterModalItems()" class="w-full p-2 mb-4 border border-gray-300 rounded-md" aria-label="Search saved clients">
+                <div id="savedFormsList" class="modal-body"></div>
+                <div class="mt-4 text-right">
+                    <button onclick="closeModal()" class="form-button bg-gray-500 hover:bg-gray-600">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-container mt-8 flex flex-col items-center gap-4 no-print" aria-label="Form Actions">
+            <div class="flex flex-wrap justify-center gap-4">
+                <button type="button" onclick="displaySavedForms()" class="form-button bg-yellow-500 hover:bg-yellow-600 text-black">Load Saved Data</button>
+                <button type="button" onclick="saveToLocalStorage()" class="form-button bg-green-600 hover:bg-green-700">Save Progress</button>
+                <button type="button" onclick="printForm()" class="form-button bg-blue-600 hover:bg-blue-700">Print Summary</button>
+            </div>
+            <div class="flex flex-wrap justify-center gap-4">
+                <input type="file" id="importFile" onchange="importData(event)" accept=".json" style="display: none;">
+                <button type="button" onclick="document.getElementById('importFile').click()" class="form-button bg-gray-600 hover:bg-gray-700">Import from File</button>
+                <button type="button" onclick="exportData()" class="form-button bg-gray-600 hover:bg-gray-700">Export to File</button>
+            </div>
+            <div>
+                <button type="button" onclick="clearForm()" class="form-button bg-red-600 hover:bg-red-700">Clear Form</button>
+            </div>
+        </div>
+    </div>
+    <script>
+    // --- CONFIGURATION ---
+    const FORM_ID = 'deu-v1';
+    const FORM_NAME_PRINT = 'Diagnostic Evaluation Update';
+    const FORM_ELEMENT_ID = 'deuForm';
+
+    // --- PRINT FUNCTION ---
+    function printForm() {
+        const data = getFormData();
+        const getValue = (key, fallback = '') => data[key] ? (String(data[key]).trim()) : fallback;
+        const getChecked = key => Array.isArray(data[key]) ? data[key] : (data[key] ? [data[key]] : []);
+        const formatDate = (d) => { if (!d || !/^\d{4}-\d{2}-\d{2}$/.test(d)) return ''; const [y,m,dy] = d.split('-'); return `${m}/${dy}/${y}`; };
+        const createField = (label, value) => `<div class="field"><span class="label">${label}</span><div class="value">${value || '&nbsp;'}</div></div>`;
+        const createFieldLong = (label, value) => `<div class="field full-width"><span class="label">${label}</span><div class="value value-long">${value || '&nbsp;'}</div></div>`;
+
+        let mainContent = '';
+
+        // --- Section Builder Functions ---
+        const buildDemographics = () => {
+            let html = `<div class="grid-3col">
+                ${createField('Client Name', getValue('clientName'))} ${createField('Date of Birth', formatDate(getValue('dob')))} ${createField('Age', getValue('age'))}
+                ${createField('Date of Assessment', formatDate(getValue('date')))} ${createField('Record #', getValue('recordNumber'))} ${createField('Phone', getValue('phoneNumber'))}
+            </div>`;
+            html += `<div class="sub-section grid-2col">${createField('Race/Ethnicity', getValue('raceEthnicity'))}${createField('Gender', getValue('gender'))}${createField('Sexual Orientation', getValue('sexualOrientation'))}${createField('Preferred Pronoun', getValue('preferredPronoun'))}</div>`;
+            html += `<div class="sub-section">${createField('Address', getValue('address'))}${createFieldLong('Additional Information', getValue('demographics_additional_info'))}</div>`;
+            return html;
+        };
+
+        const buildSubstanceUse = () => {
+            let html = '';
+            const substances = [ 
+                { name: 'TOBACCO', key: 'tobacco'}, 
+                { name: 'ALCOHOL - beer, wine, liquor, etc.', key: 'alcohol'}, 
+                { name: 'CANNABIS', key: 'cannabis'}, 
+                { name: 'HALLUCINOGENS', key: 'hallucinogens'}, 
+                { name: 'PHENCYCLIDINE (PCP)', key: 'pcp'}, 
+                { name: 'INHALANTS', key: 'inhalants'}, 
+                { name: 'OPIOIDS', key: 'opioids'}, 
+                { name: 'SEDATIVE, HYPNOTIC, OR ANXIOLYTIC', key: 'sedative'}, 
+                { name: 'STIMULANTS', key: 'stimulants'}, 
+                { name: 'OTHER (unknown)', key: 'other'} 
+            ];
+            
+            substances.forEach(sub => {
+                if (!getChecked(`${sub.key}_never_used`).includes('on')) {
+                    let dsmMet = getChecked(`${sub.key}_dsm`).map(criterion => `<li>${criterion}</li>`).join('');
+                    html += `<div class="sub-section">
+                                <h4>${sub.name}</h4>
+                                <div class="grid-3col">
+                                    ${createField('Age at 1st Use', getValue(`${sub.key}_age_first_use`))}
+                                    ${createField('Last Use', getValue(`${sub.key}_last_use`))}
+                                    ${createField('Mode/Amount', getValue(`${sub.key}_mode`))}
+                                    ${createField('Frequency', getValue(`${sub.key}_frequency`))}
+                                    ${createField('Route', getValue(`${sub.key}_route`))}
+                                </div>
+                                ${getChecked(`${sub.key}_dsm_details_toggle`).includes('true') ? `<div class="field full-width"><span class="label">DSM Criteria Met (Past 12 Months):</span><div class="value"><ul>${dsmMet || 'None'}</ul></div></div>` : ''}
+                                ${createFieldLong('Additional Information', getValue(`${sub.key}_additional_info`))}
+                             </div>`;
+                }
+            });
+            return html || '<p>No substance use reported.</p>';
+        };
+
+        const buildAsamGrid = () => {
+            const asamData = [ 
+                { d: '1 Acute Intoxication/Withdrawal'}, 
+                { d: '2 Biomedical Conditions'}, 
+                { d: '3 Emotional/Behavioral/Cognitive Conditions'}, 
+                { d: '4 Readiness to Change'}, 
+                { d: '5 Relapse/Continued Use Potential'}, 
+                { d: '6 Recovery Environment'} 
+            ];
+            let html = '<table class="data-table"><thead><tr><th>Dimension</th><th>Risk Rating</th><th>Additional Info</th></tr></thead><tbody>';
+            asamData.forEach((item, index) => {
+                html += `<tr>
+                            <td><b>${item.d}</b></td>
+                            <td>${getChecked(`asam_dim${index+1}`).join(', ')}</td>
+                            <td>${getValue(`asam_dim${index+1}_additional_info`)}</td>
+                         </tr>`;
+            });
+            html += '</tbody></table>';
+            return html;
+        };
+
+        // --- Iterate Through Sections and Build `mainContent` ---
+        document.querySelectorAll('div[id^="section-"]').forEach(section => {
+            let sectionHtml = '';
+            switch (section.id) {
+                case 'section-demographics': sectionHtml = buildDemographics(); break;
+                case 'section-update-reason': sectionHtml = `<div class="grid-2col">${createField('Reason for update', getValue('update_reason'))}${createField('Date of last DE/DA', formatDate(getValue('last_de_date')))}</div>${createFieldLong('Additional Information', getValue('de_update_additional_info'))}`; break;
+                case 'section-presenting-problem': sectionHtml = `${createFieldLong('What led you to come in here today?', getValue('presentingProblem'))}${createFieldLong('What does client hope to get from treatment?', getValue('treatmentHope'))}${createField('How severe on a scale of 1-10?', getValue('severity'))}${createFieldLong('Additional Information', getValue('presenting_problem_additional_info'))}`; break;
+                case 'section-previous-diagnosis': let diagRows = ''; for(let i = 0; i < 5; i++) { if(getValue(`previous_diagnosis_${i}_0`)) { diagRows += `<tr><td>${getValue(`previous_diagnosis_${i}_0`)}</td><td>${getValue(`previous_diagnosis_${i}_1`)}</td><td>${formatDate(getValue(`previous_diagnosis_${i}_2`))}</td></tr>`; } } sectionHtml = `<table class="data-table"><thead><tr><th>Diagnosis</th><th>Code</th><th>Date Identified</th></tr></thead><tbody>${diagRows || '<tr><td colspan="3">No previous diagnoses provided.</td></tr>'}</tbody></table>`; break;
+                case 'section-psychiatric-history': sectionHtml = `${createFieldLong("Diagnosis (in client's words)", getValue('psych_dx_words'))}<div class="grid-2col">${createField('Most recent hospitalization', getValue('most_recent_hosp'))}${createField('Where?', getValue('hosp_where'))}${createField('Length of stay', getValue('hosp_length'))}</div>${createFieldLong('What was going on?', getValue('hosp_reason'))}${createFieldLong('Additional Information', getValue('psych_history_additional_info'))}${createField('Receiving outside treatment?', getValue('outside_treatment'))}`; break;
+                case 'section-substance-use': sectionHtml = buildSubstanceUse(); break;
+                case 'section-cage-treatment': sectionHtml = `<h4>CAGE Questions</h4><div class="grid-2col">${createField('Have you ever felt you should cut down on your drinking/drug use?', getValue('cage_cutdown'))}${createField('Have people annoyed you by criticizing your drinking/drug use?', getValue('cage_annoyed'))}${createField('Have you ever felt bad/guilty about your drug use?', getValue('cage_guilty'))}${createField('Have you ever had to drink/used drugs first thing in the morning to steady your nerves or help you to feel better?', getValue('cage_eyeopener'))}</div><div class="sub-section">${createFieldLong('Client insight to SU issues:', getValue('client_insight'))}${createField('Clinical focus:', getValue('clinical_focus'))}</div>`; break;
+                case 'section-narrative': sectionHtml = createFieldLong('', getValue('narrative_summary')); break;
+                case 'section-diagnostic-impression': sectionHtml = createFieldLong('Diagnostic Impression (DSM 5 & ICD 10)', getValue('diagnostic_impression')); break;
+                case 'section-recommended-services': sectionHtml = `${createField('Recommended Services', getChecked('recommended_services').join(', '))}`; break;
+                case 'section-asam': sectionHtml = buildAsamGrid(); break;
+                case 'section-strengths': sectionHtml = `${createField('Strengths/Assets/Resources', getChecked('strengths').join(', '))}`; break;
+                case 'section-skills-deficits': sectionHtml = `${createField('Skills Deficits/Training/Community Support Needs', getChecked('skills_deficits').join(', '))}${createFieldLong('As Evidenced By', getValue('skills_evidence'))}`; break;
+            }
+            if (sectionHtml) {
+                mainContent += `<h3 class="section-title">${section.querySelector('h3').textContent}</h3><div>${sectionHtml}</div>`;
+            }
+        });
+
+        const printWindow=window.open('','_blank');
+        printWindow.document.write(`<html><head><title>${FORM_NAME_PRINT} - ${getValue('clientName')}</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"><style>body{font-family:'Inter',sans-serif;font-size:10pt;color:#333;margin:0;background-color:#e0e0e0}.page-content{width:8.5in;min-height:11in;padding:0.75in;box-sizing:border-box;background-color:white;margin:2rem auto;box-shadow:0 0 10px rgba(0,0,0,0.2)}@media print{body{background-color:white;padding:0}.page-content{margin:0;box-shadow:none;min-height:0}.footer{position:fixed;bottom:0.75in;left:0.75in;right:0.75in;width:calc(8.5in - 1.5in)}h3.section-title,.data-table,.field,.signature-section{page-break-inside:avoid}}.header{display:flex;justify-content:space-between;align-items:center;padding-bottom:10px;border-bottom:2px solid #000080}.footer{display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:2px solid #000080;font-size:8pt;color:#666;margin-top:20px}.logo{width:150px;height:auto}.header-title{text-align:right}.header-title h1{margin:0;font-size:16pt;color:#000080;font-weight:700}.header-title h2{margin:0;font-size:10pt;font-weight:400;color:#555}h3.section-title{font-size:12pt;font-weight:600;color:#333;background-color:#f0f5fa;padding:8px 12px;margin:20px 0 15px 0;border-left:4px solid #000080}.sub-section{margin-top:1rem;padding-top:1rem;border-top:1px dashed #ccc;}.grid-2col{display:grid;grid-template-columns:1fr 1fr;gap:12px 20px}.grid-3col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px 20px}.field .label{font-weight:600;font-size:9pt;color:#444;display:block;margin-bottom:4px}.field .value{background:#f9f9f9;padding:6px 10px;border-radius:4px;border:1px solid #eee;min-height:1.2em;word-wrap:break-word;}.field .value-long{white-space:pre-wrap;min-height:3em}.full-width{grid-column:1 / -1}.data-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:9pt}.data-table th,.data-table td{border:1px solid #ddd;padding:6px;text-align:left;vertical-align:top;}.data-table th{background-color:#f2f2f2;font-weight:600}.signature-section{margin-top:30px;padding-bottom:60px; page-break-before: auto;}.signature-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:25px;align-items:end;}.signature-box{margin-top:15px;}.signature-line{border-bottom:1px solid #333;height:40px;margin-bottom:5px}.signature-label{font-size:8pt;color:#555}</style></head><body><div class="page-content"><div class="header">
+  <img src="../images/goldlogo.png" alt="Company Logo" class="logo">
+  <div class="header-title">
+    <h1>${FORM_NAME_PRINT}</h1>
+    <h2>Watson Community Health Center</h2>
+    <div class="identifiers" style="margin-top:8px;font-size:10pt;color:#333;text-align:right;">
+      <strong>Client:</strong> ${getValue('clientName') || '&nbsp;'}<br>
+      <strong>Record #:</strong> ${getValue('recordNumber') || '&nbsp;'}<br>
+      <strong>DOB:</strong> ${formatDate(getValue('dob')) || '&nbsp;'}
+    </div>
+  </div>
+</div><main>${mainContent}</main><div class="signature-section"><h3 class="section-title">Evaluation Completed By</h3><div class="signature-grid"><div class="signature-box"><div class="signature-line"></div><span class="signature-label">Clinician Signature</span></div><div class="signature-box"><div class="signature-line"></div><span class="signature-label">Date: ${formatDate(getValue('clinicianDate'))}</span></div><div>${getValue('clinicianPrintedName')}</div><div></div><div class="signature-box"><div class="signature-line"></div><span class="signature-label">Supervisor Signature (if applicable)</span></div><div class="signature-box"><div class="signature-line"></div><span class="signature-label">Date: ${formatDate(getValue('supervisorDate'))}</span></div><div>${getValue('supervisorPrintedName')}</div><div></div></div></div></div></body></html>`);
+        printWindow.document.close();
+        printWindow.focus();
+        setTimeout(()=>{printWindow.print()},500);
+    }
+
+    // --- UNIVERSAL FUNCTIONS ---
+    function getFormData(){const form=document.getElementById(FORM_ELEMENT_ID);const formData=new FormData(form);const data={formId:FORM_ID,lastModified:new Date().toISOString()};for(const[key,value]of formData.entries()){const cleanKey=key.replace(/\[\]$/,'');if(key.endsWith('[]')){if(!data[cleanKey])data[cleanKey]=[];data[cleanKey].push(value)}else{data[key]=value}}return data}
+    function populateForm(data){const form=document.getElementById(FORM_ELEMENT_ID);form.reset();for(const key in data){if(key==='formId'||key==='lastModified')continue;const elements=form.elements[key]||form.elements[key+'[]'];if(!elements)continue;const value=data[key];const elementList=elements.nodeName?[elements]:Array.from(elements);const firstEl=elementList[0];if(firstEl.type==='checkbox'){const values=Array.isArray(value)?value:[value];elementList.forEach(el=>{el.checked=values.includes(el.value)})}else if(firstEl.type==='radio'){elementList.forEach(el=>{if(el.value===value)el.checked=true})}else{if(firstEl.value!==undefined)firstEl.value=value}}form.querySelectorAll('[onchange]').forEach(el=>el.dispatchEvent(new Event('change')));if(document.getElementById('dob'))document.getElementById('dob').dispatchEvent(new Event('input'))}
+    function saveToLocalStorage(){const data=getFormData();const clientName=data.clientName.trim();if(!clientName){alert('Please enter a Client Name before saving.');return}const key=`savedForm_${FORM_ID}_${clientName}`;try{localStorage.setItem(key,JSON.stringify(data));alert(`Progress for ${clientName} saved successfully!`)}catch(e){if(e.name==='QuotaExceededError'){alert('Error: Browser storage is full. Please export and then delete some older saved forms to make space.')}else{alert('An unknown error occurred while saving.');console.error(e)}}}
+    function displaySavedForms(){const savedFormsList=document.getElementById('savedFormsList');savedFormsList.innerHTML='';let savedItems=[];for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i);if(key.startsWith(`savedForm_${FORM_ID}_`)){try{const data=JSON.parse(localStorage.getItem(key));savedItems.push({key,data})}catch(e){console.error('Could not parse saved data:',key,e)}}}savedItems.sort((a,b)=>new Date(b.data.lastModified)-new Date(a.data.lastModified));if(savedItems.length===0){savedFormsList.innerHTML=`<p class="text-gray-500">No saved forms found in this browser.</p>`}else{savedItems.forEach(item=>{const clientName=item.data.clientName||'Unnamed';const lastModified=new Date(item.data.lastModified).toLocaleString();const itemDiv=document.createElement('div');itemDiv.className='modal-item';itemDiv.innerHTML=`<div class="flex-grow" onclick="loadSelectedForm('${item.key}')"><strong class="item-name">${clientName}</strong><br><small>Last saved: ${lastModified}</small></div><button onclick="deleteSavedForm(event,'${item.key}')"class="delete-btn">Delete</button>`;savedFormsList.appendChild(itemDiv)})}document.getElementById('loadModal').classList.remove('hidden');document.getElementById('modalSearch').value='';document.getElementById('modalSearch').focus()}
+    function filterModalItems(){const searchTerm=document.getElementById('modalSearch').value.toLowerCase();document.querySelectorAll('.modal-item').forEach(item=>{const name=item.querySelector('.item-name').textContent.toLowerCase();item.style.display=name.includes(searchTerm)?'flex':'none'})}
+    function loadSelectedForm(key){const data=JSON.parse(localStorage.getItem(key));populateForm(data);closeModal();alert(`Data for ${data.clientName} has been loaded.`)}
+    function deleteSavedForm(event,key){event.stopPropagation();const data=JSON.parse(localStorage.getItem(key));const clientName=data.clientName||'this entry';if(confirm(`Are you sure you want to permanently delete the saved data for ${clientName}? This cannot be undone.`)){localStorage.removeItem(key);displaySavedForms();filterModalItems()}}
+    function closeModal(){document.getElementById('loadModal').classList.add('hidden')}
+    function parseClientName(nameStr){let[lastName,firstName]=['Unknown','Client'];if(nameStr){if(nameStr.includes(',')){[lastName,firstName]=nameStr.split(',',2).map(s=>s.trim())}else{const parts=nameStr.trim().split(' ');lastName=parts.pop()||'Unknown';firstName=parts.join(' ')||'Client'}}return[lastName,firstName]}
+    function exportData(){const data=getFormData();if(!data.clientName.trim()){alert('Please enter a Client Name before exporting.');return}const[lastName,firstName]=parseClientName(data.clientName);const filename=`${formatDate(data.date)||'NODATE'}_${lastName}_${firstName}_${FORM_ID}.json`;const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download=filename;link.click();URL.revokeObjectURL(link.href)}
+    function importData(event){const file=event.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=function(e){try{const data=JSON.parse(e.target.result);if(data.formId!==FORM_ID){alert(`Error: Incompatible File\n\nThis file is for the '${data.formId||'Unknown Form'}'. You are currently on the '${FORM_ID}' form.`);return}populateForm(data);alert('Client data imported successfully from file!')}catch(error){alert('An error occurred while reading this file.');console.error("Import Error: ",error)}};reader.readAsText(file);event.target.value=''}
+    function clearForm(){if(confirm("Are you sure you want to clear all fields on this form? This cannot be undone.")){document.getElementById(FORM_ELEMENT_ID).reset();initializeFormDefaults();alert('Form has been cleared.')}}
+
+    // --- FORM-SPECIFIC HELPERS ---
+    function initializeFormDefaults(){if(document.getElementById('date'))document.getElementById('date').valueAsDate=new Date();if(typeof setupInitialDates==='function')setupInitialDates();if(typeof updateAgeAndFooter==='function')updateAgeAndFooter()}
+    function setupInitialDates(){const today=new Date().toISOString().split('T')[0];['date','clinicianDate','supervisorDate'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=today})}
+    function updateAgeAndFooter(){const dobInput=document.getElementById('dob');if(dobInput&&dobInput.value){const dob=new Date(dobInput.value);const today=new Date();let age=today.getFullYear()-dob.getFullYear();const m=today.getMonth()-dob.getMonth();if(m<0||(m===0&&today.getDate()<dob.getDate())){age--}document.getElementById('age').value=age>=0?age:''}else if(document.getElementById('age')){document.getElementById('age').value=''}updateFooterInfo()}
+    function updateFooterInfo(){document.getElementById('footer_client_name').value=document.getElementById('clientName').value;document.getElementById('footer_dob').value=document.getElementById('dob').value;document.getElementById('footer_mrn').value=document.getElementById('recordNumber').value}
+    function updateNavigation(){const navContainer=document.getElementById('form-nav');if(!navContainer)return;navContainer.innerHTML='';document.querySelectorAll('div[id^="section-"]').forEach(section=>{const title=section.querySelector('h3')?.textContent;if(title){const link=document.createElement('a');link.href=`#${section.id}`;link.className='nav-link';link.textContent=title;navContainer.appendChild(link)}})}
+    function buildGrid(containerId,rows,types){const container=document.getElementById(containerId);if(!container)return;container.innerHTML='';for(let i=0;i<rows;i++){const row=document.createElement('div');row.className='grid grid-cols-3 gap-4';types.forEach((type,j)=>{const input=document.createElement('input');input.type=type;input.name=`${containerId}_${i}_${j}`;input.className='form-input';const div=document.createElement('div');div.appendChild(input);row.appendChild(div)});container.appendChild(row)}}
+    function buildSubstanceUseSection(){const container=document.getElementById('substance-use-container');if(!container)return;const substances=[{name:'TOBACCO',key:'tobacco'},{name:'ALCOHOL - beer, wine, liquor, etc.',key:'alcohol'},{name:'CANNABIS',key:'cannabis'},{name:'HALLUCINOGENS',key:'hallucinogens'},{name:'PHENCYCLIDINE (PCP)',key:'pcp'},{name:'INHALANTS',key:'inhalants'},{name:'OPIOIDS',key:'opioids'},{name:'SEDATIVE, HYPNOTIC, OR ANXIOLYTIC',key:'sedative'},{name:'STIMULANTS',key:'stimulants'},{name:'OTHER (unknown)',key:'other'}];const dsmCriteria=["Taken in larger amounts or over a longer period than intended","Persistent desire or unsuccessful efforts to cut down","Great deal of time spent to obtain/use/recover","Craving or strong desire to use","Failure to fulfill major role obligations","Continued use despite social/interpersonal problems","Important activities given up","Recurrent use in hazardous situations","Continued use despite physical/psychological problems","Tolerance","Withdrawal"];substances.forEach(sub=>{const key=sub.key;let dsmHtml=dsmCriteria.map((criterion,i)=>`<label class="flex items-start text-sm"><input type="checkbox" name="${key}_dsm[]" value="${criterion}" class="h-4 w-4 mt-1"><span class="ml-2">${criterion}</span></label>`).join('');const substanceHTML=`<div class="p-4 border rounded-lg bg-white mb-4"><h4 class="text-md font-semibold text-gray-800 mb-2">${sub.name}</h4><div class="substance-details"><label class="flex items-center mb-4"><input type="checkbox" name="${key}_never_used"> <span class="ml-2">Never Used</span></label><div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"><div><label class="form-label text-sm">Age at 1st use:</label><input type="number" name="${key}_age_first_use" class="form-input text-sm"></div><div><label class="form-label text-sm">Last use:</label><input type="text" name="${key}_last_use" class="form-input text-sm"></div><div class="md:col-span-2"><label class="form-label text-sm">Mode of use (include amount):</label><input type="text" name="${key}_mode" class="form-input text-sm"></div><div><label class="form-label text-sm">Frequency:</label><input type="text" name="${key}_frequency" class="form-input text-sm"></div><div><label class="form-label text-sm">Route:</label><input type="text" name="${key}_route" class="form-input text-sm"></div></div><label class="flex items-center mb-4"><input type="checkbox" name="${key}_dsm_details_toggle" onchange="toggleDetails(this, '${key}_dsm_details', this.checked)"> <span class="ml-2">Used in the past 12 months? (if checked, answer below):</span></label><div id="${key}_dsm_details" class="hidden space-y-2">${dsmHtml}</div><div class="mt-4"><label class="form-label text-sm">Additional information:</label><textarea name="${key}_additional_info" class="form-textarea text-sm h-20"></textarea></div></div></div>`;container.innerHTML+=substanceHTML})}
+    function buildCheckTextRow(containerId,items){const container=document.getElementById(containerId);if(!container)return;container.innerHTML='';items.forEach(item=>{const key=item.replace(/[^a-zA-Z]/g,'').toLowerCase();container.innerHTML+=`<div class="p-3 border-t"><label class="flex items-start"><input type="checkbox" name="${key}_changed" class="h-4 w-4 mt-1 flex-shrink-0" onchange="this.parentElement.nextElementSibling.classList.toggle('hidden', !this.checked)"> <span class="ml-3 font-medium">${item}</span></label><div class="hidden mt-2 pl-7"><label class="form-label text-sm">Evidenced By/Signs/Symptoms/Behaviors:</label><textarea name="${key}_details" class="form-textarea text-sm h-20"></textarea></div></div>`})}
+    function buildMseSection(){const container=document.getElementById('mse-container');if(!container)return;const mseData=[{group:'General Observations',items:[{label:'Appearance',options:['Well-groomed','Unkept','Disheveled']},{label:'Build',options:['Average','Thin','Overweight']},{label:'Demeanor',options:['Average','Hostile','Mistrustful','Withdrawn','Preoccupied','Demanding']},{label:'Eye Contact',options:['Average','Avoidant','Intense']},{label:'Activity',options:['Average','Agitated','Slowed']},{label:'Speech',options:['Clear','Slurred','Slowed','Rapid','Pressured']}]},{group:'Thought Content',items:[{label:'Delusions',options:['None Reported','Grandiose','Persecutory','Somatic','Bizarre','Nihilistic','Religious']},{label:'Other',options:['None Reported','Autistic','Obsessional','Phobic','Guilty','Ideas of reference','Preoccupied','Guarded']},{label:'Self-Abuse',options:['None Reported','Suicidal (assess lethality if present)','Intent','Plan','Self-mutilization']},{label:'Aggressive',options:['None Reported','Aggressive (assess lethality if present)','Intent','Plan']}]},{group:'Perception',items:[{label:'Hallucinations',options:['None Reported','Auditory','Visual','Olfactory','Gustatory','Tactile']},{label:'Other',options:['Illusions','Depersonalization','Derealization']}]},{group:'Thought Process',items:[{type:'checkbox',options:['Logical','Circumstantial','Tangential','Loose','Racing','Incoherent','Concrete','Blocked','Flight of Ideas']}]},{group:'Mood',items:[{type:'checkbox',options:['Euthymic','Depressed','Anxious','Angry','Euphoric','Irritable','Pessimistic','Happy','Elated','Nonchalant','Apathetic','Dismissive','Hopeless']}]},{group:'Affect',items:[{type:'checkbox',options:['Full','Constricted','Flat','Inappropriate','Labile','Incongruent','Euthymic','Congruent with Mood','Depressed','Blunted','Variable','Mobilizable','Frightened','Dejected','Attention Seeking']}]},{group:'Behavior',items:[{type:'checkbox',options:['Cooperative','Resistant','Agitated','Impulsive','Over Sedated','Assaultive','Aggressive','Hyperactive','Restless','Loss of Interests','Anhedonia','Akathisia','Withdrawn','Dystonia','Tardive','Dyskinesia']}]},{group:'Cognition',items:[{label:'Impairment of',options:['None Reported','Orientation','Memory','Attention/Concentration','Ability to Abstract']},{label:'Intelligence Estimate',options:['DD','Borderline','Average','Above Average']}]},{group:'Insight/Judgment',items:[{label:'Insight/Judgment',type:'radio',options:['Good','Fair','Poor']}]}];let html='';mseData.forEach(section=>{html+=`<h4 class="text-md font-semibold text-gray-800 mb-2 mt-4">${section.group}</h4>`;section.items.forEach(item=>{const nameKey=(section.group.split(' ')[0]+'_'+(item.label||section.group)).toLowerCase().replace(/[^a-z0-9_]/g,'');html+=`<div class="mb-4">`;if(item.label){html+=`<label class="form-label">${item.label}:</label>`}html+=`<div class="flex flex-wrap gap-x-4 gap-y-2">`;const inputType=item.type||'checkbox';item.options.forEach(opt=>{html+=`<label class="flex items-center"><input type="${inputType}" name="${nameKey}[]" value="${opt}"> <span class="ml-2">${opt}</span></label>`});html+=`</div></div>`});html+=`<div><label for="${section.group.toLowerCase().replace(/[^a-z0-9]/g,'')}_comments" class="form-label">Comments:</label><textarea id="${section.group.toLowerCase().replace(/[^a-z0-9]/g,'')}_comments" name="${section.group.toLowerCase().replace(/[^a-z0-9]/g,'')}_comments" class="form-textarea h-24"></textarea></div>`;if(section.group!=='Insight/Judgment'){html+='<hr class="my-6 border-gray-300>'}});container.innerHTML=html}
+    function buildAsamGrid(){const container=document.getElementById('asam-grid-container');if(!container)return;const asamData=[{dimension:'1 Acute Intoxication and/or Withdrawal'},{dimension:'2 Biomedical Conditions and Complications'},{dimension:'3 Emotional/Behavioral or Cognitive Conditions and Complications'},{dimension:'4 Readiness to Change'},{dimension:'5 Relapse, Continued Use or Continued Problem Potential'},{dimension:'6 Recovery Environment'}];asamData.forEach((item,index)=>{const row=document.createElement('div');row.className='asam-grid border-b';row.innerHTML=`<div>${item.dimension}</div> <div><input type="checkbox" name="asam_dim${index+1}[]" value="1" class="h-5 w-5"></div> <div><input type="checkbox" name="asam_dim${index+1}[]" value="2.1" class="h-5 w-5"></div> <div><input type="checkbox" name="asam_dim${index+1}[]" value="3.1" class="h-5 w-5"></div> <div><input type="checkbox" name="asam_dim${index+1}[]" value="3.5" class="h-5 w-5"></div>`;container.appendChild(row);const additionalInfoRow=document.createElement('div');additionalInfoRow.className='mt-4 mb-6 pt-2';additionalInfoRow.innerHTML=`<textarea name="asam_dim${index+1}_additional_info" class="form-textarea h-24" placeholder="Additional information..."></textarea><label class="flex items-center mt-2"><input type="checkbox" name="asam_no_further_treatment_${index+1}" value="true" class="h-4 w-4"><span class="ml-2 text-sm text-gray-600">No further treatments are required for this client.</span></label>`;container.appendChild(additionalInfoRow)})}
+    function toggleDetails(element,detailsId,show){const detailsContainer=document.getElementById(detailsId);if(detailsContainer){detailsContainer.classList.toggle('hidden',!show)}}
+
+    // PAGE INITIALIZATION
+    document.addEventListener('DOMContentLoaded', () => {
+        if(document.getElementById('modalSearch')) document.getElementById('modalSearch').addEventListener('keyup', filterModalItems);
+        ['dob', 'clientName', 'recordNumber'].forEach(id => { const el = document.getElementById(id); if (el) el.addEventListener('input', updateAgeAndFooter); });
+        document.getElementById('severity').addEventListener('input', e => { document.getElementById('severityValue').textContent = e.target.value; });
+
+        buildGrid('previous-diagnosis-grid', 5, ['text','text','date']);
+        buildSubstanceUseSection();
+        buildCheckTextRow('psychosocial-functioning-container', ['Family Environment/Relationships/Special Circumstances', 'Housing', 'Employment/Income', 'Military Information', 'Education/School Performance', 'Religious/Spirituality/Cultural Beliefs', 'Behavior and Social Problems', 'Legal System Involvement', 'Interests/Hobbies', 'Psychosocial Stressors', 'Pertinent Health Issues/Medical Problems', 'Current medications or changes', 'Pregnancy/Births/Miscarriage/Abortions/Other', 'Primary Care Physician (Name/Location)', 'Other']);
+        buildCheckTextRow('psychiatric-symptoms-container', ['Nutritional/Eating Pattern Changes/Disorders', 'Pain Management', 'Depressed Mood', 'Bereavement Issues', 'Oppositional Behaviors', 'Inattention', 'Impulsivity', 'Hyperactivity', 'Disturbed Reality (psychosis)', 'Mood Swings/Manic Episodes', 'Trauma', 'Anxiety/Panic Attacks/Obsessions/Compulsions', 'Survivorship/Victimization', 'Violence to others, objects, or places/Self-injury/Suicide Attempts', 'Anger Management', 'Addictive Behaviors (gambling, sexual, substance)', 'Other Addictive Behaviors', 'Sleep Problems', 'Other']);
+        buildMseSection();
+        buildAsamGrid();
+        updateNavigation();
+        initializeFormDefaults();
+    });
+
+    document.getElementById('deuForm').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            // Allow Enter in textarea and on buttons
+            if (
+                e.target.tagName !== 'TEXTAREA' &&
+                e.target.type !== 'submit' &&
+                e.target.type !== 'button'
+            ) {
+                e.preventDefault();
+                return false;
+            }
+        }
+    });
+</script>
+
+</body>
+</html>    

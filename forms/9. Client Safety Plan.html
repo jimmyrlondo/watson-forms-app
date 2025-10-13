@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Safety Plan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="../images/favicon.png">
+    <meta name="description" content="Client Safety Plan form for Watson Community Health Center. Accessible, print-friendly, and legally compliant.">
+    <meta property="og:title" content="Client Safety Plan - Watson Community Health Center">
+    <meta property="og:description" content="Professional, secure, and accessible Client Safety Plan form.">
+    <meta property="og:image" content="../images/logo.png">
+    <meta property="og:type" content="website">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .signature-line { height: 2.5rem; border-bottom: 1px solid #4b5563; margin-top: 0.25rem; }
+        .form-container { max-width: 960px; margin: 2rem auto; padding: 2rem; background-color: #ffffff; border-radius: 1.5rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+        .form-label { font-weight: 600; color: #111827; margin-bottom: 0.5rem; display: block; }
+        .form-input, .form-textarea, .form-select { display: block; width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; background-color: #ffffff; transition: all 0.2s; }
+        .form-input:focus, .form-textarea:focus, .form-select:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.5); }
+        .form-button { display: inline-block; padding: 0.75rem 1.5rem; font-weight: 600; color: #ffffff; border-radius: 0.75rem; transition: all 0.2s; cursor: pointer; border: none; }
+        .form-button:hover, .form-button:focus { opacity: 0.9; outline: 2px solid #d3af37; outline-offset: 2px;}
+        .nav-link { display: block; padding: 0.5rem 1rem; border-radius: 0.5rem; margin: 0 4px 0.5rem 4px; font-weight: 500; color: #4b5563; background-color: #f3f4f6; transition: background-color 0.2s; text-decoration: none; }
+        .nav-link:hover, .nav-link:focus { background-color: #e5e7eb; outline: 2px solid #d3af37; outline-offset: 2px;}
+        .nav-container { position: fixed; top: 2rem; left: 2rem; width: 250px; z-index: 10; display: none; max-height: calc(100vh - 4rem); overflow-y: auto; padding-left: 16px; padding-right: 8px;}
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+        .modal-content { background: white; padding: 1.5rem; border-radius: 1rem; max-width: 600px; width: 90%; max-height: 80vh; display: flex; flex-direction: column; }
+        .modal-body { overflow-y: auto; }
+        .modal-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; border: 1px solid #e5e7eb; border-radius: 0.5rem; margin-bottom: 0.5rem; cursor: pointer; transition: background-color 0.2s; }
+        .modal-item:hover { background-color: #f3f4f6; }
+        .delete-btn { background-color: #ef4444; color: white; border: none; padding: 0.25rem 0.75rem; border-radius: 0.5rem; font-size: 0.75rem; cursor: pointer; }
+        .delete-btn:hover { background-color: #dc2626; }
+        .sr-only { position: absolute!important; width: 1px!important; height: 1px!important; padding: 0!important; margin: -1px!important; overflow: hidden!important; clip: rect(0,0,0,0)!important; white-space: nowrap!important; border: 0!important; }
+        .focus\:not-sr-only:focus { position: static!important; width: auto!important; height: auto!important; margin: 0!important; overflow: visible!important; clip: auto!important; white-space: normal!important; }
+        @media print {
+            body { background-color: #fff !important; }
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            .form-container { box-shadow: none !important; margin: 0 !important; padding: 0.5in !important; border-radius: 0; }
+            .page-break { page-break-before: always; margin-top: 1.5in !important; }
+            .signature-section { min-height: 2in; padding-bottom: 1in; }
+        }
+        @media (min-width: 1024px) { .nav-container { display: block; } .form-container { margin-left: 280px; } }
+    </style>
+</head>
+<body>
+    <!-- Accessibility: skip to content link for screen readers -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-yellow-200 p-2 rounded z-50">Skip to main content</a>
+    <!-- Sidebar Navigation with ARIA -->
+    <div class="nav-container" role="navigation" aria-label="Form Section Navigation">
+        <a href="../index.html" class="nav-link font-bold text-blue-600 hover:bg-blue-100 mb-4">← Forms Home</a>
+        <h3 class="font-bold text-gray-900 mb-2">Form Sections</h3>
+        <nav id="form-nav" aria-label="Section links"></nav>
+    </div>
+    <div id="main-content" class="form-container" role="main" tabindex="-1">
+                <form id="safetyPlanForm" aria-label="Client Safety Plan Form">
+            <input type="hidden" id="formId" value="client-safety-plan-v1">
+
+            <!-- --- Section: Client Information --- -->
+            <div id="section-1" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Client Information</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                            <label for="dateOfPlan" class="form-label">Date</label>
+                            <input type="date" id="dateOfPlan" name="date" class="form-input">
+                        </div>
+                        <div>
+                            <label for="staffName" class="form-label">WCHC Staff</label>
+                            <input type="text" id="staffName" name="staffName" class="form-input">
+                        </div>
+                        <div>
+                            <label for="supervisorName" class="form-label">Supervisor Name</label>
+                            <input type="text" id="supervisorName" name="supervisorName" class="form-input">
+                        </div>
+                        <div>
+                            <label for="clientName" class="form-label">Client</label>
+                            <input type="text" id="clientName" name="clientName" class="form-input">
+                        </div>
+                        <div>
+                            <label for="dob" class="form-label">DOB</label>
+                            <input type="date" id="dob" name="dob" class="form-input">
+                        </div>
+                        <div>
+                            <label for="mrn" class="form-label">MRN</label>
+                            <input type="text" id="mrn" name="mrn" class="form-input">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="address" class="form-label">Address</label>
+                            <input type="text" id="address" name="address" class="form-input">
+                        </div>
+                        <div>
+                            <label for="phoneNumber" class="form-label">Phone Number</label>
+                            <input type="text" id="phoneNumber" name="phoneNumber" class="form-input">
+                        </div>
+                        <div>
+                            <label for="guardianName" class="form-label">Guardian Name</label>
+                            <input type="text" id="guardianName" name="guardianName" class="form-input">
+                        </div>
+                        <div>
+                            <label for="guardianPhone" class="form-label">Guardian Phone</label>
+                            <input type="text" id="guardianPhone" name="guardianPhone" class="form-input">
+                        </div>
+                        <div class="md:col-span-3">
+                            <label for="householdMembers" class="form-label">Other Household Members</label>
+                            <textarea id="householdMembers" name="householdMembers" class="form-textarea" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- --- Section: Clinical Details --- -->
+            <div id="section-2" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Clinical Details</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <label class="form-label">Diagnosis</label>
+                            <div class="space-y-2" id="diagnosis-list"></div>
+                        </div>
+                        <div>
+                            <label class="form-label">Medications/Dosage</label>
+                            <div class="space-y-2" id="medication-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- --- Section: Warning Signs & Strategies --- -->
+            <div id="section-3" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Warning Signs & Strategies</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <label class="form-label">Triggers</label>
+                            <div id="triggers-list" class="space-y-2"></div>
+                        </div>
+                        <div>
+                            <label class="form-label">Current Coping Skills</label>
+                            <div id="coping-skills-list" class="space-y-2"></div>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="form-label">De-escalation Strategies</label>
+                            <div id="deescalation-list" class="space-y-2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- --- Section: Emergency Supports --- -->
+            <div id="section-4" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Emergency Supports</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="emergency-supports-list"></div>
+                </div>
+            </div>
+
+            <!-- --- Section: Safety Action Steps --- -->
+            <div id="section-5" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Safety Action Steps</h3>
+                    <div class="space-y-6" id="action-steps-container"></div>
+                </div>
+            </div>
+
+            <!-- --- Section: Acknowledgement & Signatures --- -->
+            <div id="section-6" class="mb-6">
+                <div class="form-field-group">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Acknowledgement & Signatures</h3>
+                    <div class="flex items-center space-x-4 mb-6">
+                        <label class="form-label mb-0">Safety plan given to family:</label>
+                        <label class="flex items-center"><input type="radio" name="planGiven" value="Yes" class="h-4 w-4"> <span class="ml-2">Yes</span></label>
+                        <label class="flex items-center"><input type="radio" name="planGiven" value="No" class="h-4 w-4" checked> <span class="ml-2">No</span></label>
+                        <label for="planGivenDate" class="form-label mb-0 ml-4">Date:</label>
+                        <input type="date" id="planGivenDate" name="planGivenDate" class="form-input w-48">
+                    </div>
+                    <div id="signature-container" class="space-y-6"></div>
+                </div>
+            </div>
+
+            <!-- --- For Office Use Only --- -->
+            <div class="form-field-group bg-gray-200 mt-12">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">For Office Use Only</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label for="footer_client_name" class="form-label">Client Name:</label>
+                        <input type="text" id="footer_client_name" name="footer_client_name" class="form-input bg-gray-100" readonly>
+                    </div>
+                    <div>
+                        <label for="footer_dob" class="form-label">DOB:</label>
+                        <input type="text" id="footer_dob" name="footer_dob" class="form-input bg-gray-100" readonly>
+                    </div>
+                    <div>
+                        <label for="footer_mrn" class="form-label">MRN:</label>
+                        <input type="text" id="footer_mrn" name="footer_mrn" class="form-input bg-gray-100" readonly>
+                    </div>
+                </div>
+            </div>
+                        <!-- Modal for loading saved forms -->
+            <div id="loadModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-label="Load Saved Safety Plan">
+                <div class="modal-content">
+                    <h3 class="text-lg font-bold mb-4">Load Saved Safety Plan</h3>
+                    <input type="search" id="modalSearch" placeholder="Search by client name..." aria-label="Search saved clients" class="w-full p-2 mb-4 border border-gray-300 rounded-md">
+                    <div id="savedFormsList" class="modal-body"></div>
+                    <div class="mt-4 text-right">
+                        <button onclick="closeModal()" class="form-button bg-gray-500 hover:bg-gray-600">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            <div class="button-container mt-8 flex flex-col items-center gap-4 no-print" aria-label="Form Actions">
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button type="button" onclick="displaySavedForms()" class="form-button bg-yellow-500 hover:bg-yellow-600 text-black">Load Saved Data</button>
+                    <button type="button" onclick="saveToLocalStorage()" class="form-button bg-green-600 hover:bg-green-700">Save Progress</button>
+                    <button type="button" onclick="printForm()" class="form-button bg-blue-600 hover:bg-blue-700">Print Summary</button>
+                </div>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <input type="file" id="importFile" onchange="importData(event)" accept=".json" style="display: none;">
+                    <button type="button" onclick="document.getElementById('importFile').click()" class="form-button bg-gray-600 hover:bg-gray-700">Import from File</button>
+                    <button type="button" onclick="exportData()" class="form-button bg-gray-600 hover:bg-gray-700">Export to File</button>
+                </div>
+                <div>
+                    <button type="button" onclick="clearForm()" class="form-button bg-red-600 hover:bg-red-700">Clear Form</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script>
+    // --- CONFIGURATION ---
+    const FORM_ID = 'client-safety-plan-v1';
+    const FORM_NAME_PRINT = 'Client Safety Plan';
+    const FORM_ELEMENT_ID = 'safetyPlanForm';
+
+    // --- PRINT FUNCTION (professional header, identifying info in header, signature page break, no footer) ---
+    function printForm() {
+        const data = getFormData();
+        const getValue = (key, fallback = '') => data[key] ? (String(data[key]).trim()) : fallback;
+        const formatDate = (d) => { if (!d || !/^\d{4}-\d{2}-\d{2}$/.test(d)) return ''; const [y, m, dy] = d.split('-'); return `${m}/${dy}/${y}`; };
+        const createField = (label, value) => `<div class="field"><span class="label">${label}</span><div class="value">${value || '&nbsp;'}</div></div>`;
+        const createFieldLong = (label, value) => `<div class="field full-width"><span class="label">${label}</span><div class="value value-long">${value || '&nbsp;'}</div></div>`;
+
+        let planHtml = '';
+        for (let i = 1; i <= 3; i++) {
+            if (getValue(`concern_${i}`)) {
+                planHtml += `<tr><td>${getValue(`concern_${i}`)}</td><td>${getValue(`action_step_${i}`)}</td><td>${getValue(`responsible_${i}`)}</td><td>${formatDate(getValue(`completed_date_${i}`))}</td></tr>`;
+            }
+        }
+        const includeSupervisor = data.toggleSupervisorSig;
+
+        let printContents = `
+        <html><head><title>${FORM_NAME_PRINT} - ${getValue('clientName')}</title>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <style>
+        body { font-family:'Inter',sans-serif; font-size:10pt; line-height:1.4; color:#333; margin:0; background-color:#e0e0e0}
+        .print-container { max-width:8.5in; margin:auto; padding:0.75in; background:white; }
+        @media print {
+            body { background-color: #fff !important; }
+            .page-break { page-break-before: always; margin-top: 1.5in !important; }
+            .signature-section { min-height: 2in; padding-bottom: 1in; }
+            .print-container { box-shadow:none;margin:0;padding:0.75in; }
+        }
+        .print-header { display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid #000080; padding-bottom:1rem; margin-bottom:1rem; }
+        .print-header img { width:180px }
+        .print-header .header-title { text-align:right }
+        .print-header h1 { color:#000080; font-size:24pt; margin:0 }
+        .header-identifiers { font-size:10pt; margin-top:8px; color:#333; text-align:right }
+        h3.section-title { font-size:12pt; font-weight:600; color:#333; background-color:#f0f5fa; padding:8px 12px; margin:20px 0 15px 0; border-left:4px solid #000080; page-break-after:avoid }
+        .field { margin-bottom:12px; page-break-inside:avoid }
+        .field .label { font-weight:600; font-size:9pt; color:#444; display:block; margin-bottom:4px }
+        .field .value { background:#f9f9f9; padding:6px 10px; border-radius:4px; border:1px solid #eee; min-height:1.2em; word-wrap:break-word }
+        .field .value ul { list-style:decimal; padding-left:20px; margin:0 }
+        .field .value li { margin-bottom:4px }
+        .field .value-long { white-space:pre-wrap; word-wrap:break-word; min-height:4em }
+        .grid-print-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem 1.5rem }
+        .grid-print-2 { display:grid; grid-template-columns:repeat(2,1fr); gap:1rem 1.5rem }
+        .full-width { grid-column:1/-1 }
+        .sig-grid { display:grid; grid-template-columns:1fr 1fr; gap:2.5rem; margin-top:1rem }
+        .sig-line { border-bottom:1px solid #333; margin-top:2.5rem }
+        .sig-label { font-size:9pt; color:#555 }
+        table { width:100%; border-collapse:collapse; margin-top:1rem }
+        th,td { border:1px solid #ddd; padding:8px; text-align:left }
+        th { background-color:#f7fafc }
+        </style>
+        </head>
+        <body><div class="print-container">
+            <div class="print-header">
+                <img src="../images/logo.png" alt="Logo">
+                <div class="header-title">
+                    <h1>${FORM_NAME_PRINT}</h1>
+                    <div class="header-identifiers">
+                        <strong>Client:</strong> ${getValue('clientName') || '&nbsp;'}<br>
+                        <strong>DOB:</strong> ${formatDate(getValue('dob')) || '&nbsp;'}<br>
+                        <strong>MRN:</strong> ${getValue('mrn') || '&nbsp;'}
+                    </div>
+                </div>
+            </div>
+            <main>
+                <h3 class="section-title">Client Information</h3>
+                <div class="grid-print-3">
+                    ${createField('Date', formatDate(getValue('date')))}
+                    ${createField('WCHC Staff', getValue('staffName'))}
+                    ${createField('Supervisor', getValue('supervisorName'))}
+                    ${createField('Client', getValue('clientName'))}
+                    ${createField('DOB', formatDate(getValue('dob')))}
+                    ${createField('MRN', getValue('mrn'))}
+                    <div class="full-width">${createField('Address', getValue('address'))}</div>
+                    ${createField('Phone Number', getValue('phoneNumber'))}
+                    ${createField('Guardian Name', getValue('guardianName'))}
+                    ${createField('Guardian Phone', getValue('guardianPhone'))}
+                </div>
+                ${createFieldLong('Other Household Members', getValue('householdMembers'))}
+
+                <h3 class="section-title">Clinical Details</h3>
+                <div class="grid-print-2">
+                    <div class="field">
+                        <span class="label">Diagnosis</span>
+                        <div class="value"><ul>
+                            ${[1,2,3,4,5].map(i=>getValue('diagnosis_'+i)).filter(Boolean).map(item=>`<li>${item}</li>`).join('')||'<li>N/A</li>'}
+                        </ul></div>
+                    </div>
+                    <div class="field">
+                        <span class="label">Medications/Dosage</span>
+                        <div class="value"><ul>
+                            ${[1,2,3,4,5].map(i=>getValue('medication_'+i)).filter(Boolean).map(item=>`<li>${item}</li>`).join('')||'<li>N/A</li>'}
+                        </ul></div>
+                    </div>
+                </div>
+
+                <h3 class="section-title">Warning Signs & Strategies</h3>
+                <div class="grid-print-2">
+                    ${createField('Triggers', `<ul>${[1,2,3,4].map(i=>getValue('trigger_'+i)).filter(Boolean).map(item=>`<li>${item}</li>`).join('')||'<li>N/A</li>'}</ul>`)}
+                    ${createField('Coping Skills', `<ul>${[1,2,3,4].map(i=>getValue('coping_skill_'+i)).filter(Boolean).map(item=>`<li>${item}</li>`).join('')||'<li>N/A</li>'}</ul>`)}
+                </div>
+                ${createFieldLong('De-escalation Strategies',
+                    `<ul>${[1,2,3,4].map(i=>getValue('deescalation_strategy_'+i)).filter(Boolean).map(item=>`<li>${item}</li>`).join('')||'<li>N/A</li>'}</ul>`)}
+
+                <h3 class="section-title">Emergency Supports</h3>
+                <div class="grid-print-2">
+                    ${[...Array(6).keys()].map(i=>
+                        createField(document.querySelector(`label[for='support_contact_${i}']`)?.textContent || `Support Contact ${i+1}`, getValue(`support_contact_${i}`))
+                    ).join('')}
+                </div>
+
+                <h3 class="section-title">Safety Action Steps</h3>
+                <table>
+                    <thead>
+                        <tr><th>Safety Concern</th><th>Action Step</th><th>Responsible Person(s)</th><th>Date Completed</th></tr>
+                    </thead>
+                    <tbody>${planHtml || '<tr><td colspan="4">No action steps entered.</td></tr>'}</tbody>
+                </table>
+
+                <h3 class="section-title page-break">Acknowledgement & Signatures</h3>
+                <div>
+                    <p style="margin-bottom: 1.5rem;">
+                        <span class="label">Safety plan given to family:</span>
+                        <span class="value" style="display:inline; padding: 4px 8px;">
+                            ${getValue('planGiven')==='Yes' ? `Yes on ${formatDate(getValue('planGivenDate'))}` : 'No'}
+                        </span>
+                    </p>
+                     <div class="sig-grid signature-section">
+                        <div>
+                            <div class="sig-line"></div>
+                            <div class="sig-label">Client: ${getValue('sig_client_name')} - Date: ${formatDate(getValue('sig_client_date'))}</div>
+                        </div>
+                        <div>
+                            <div class="sig-line"></div>
+                            <div class="sig-label">Parent/Guardian: ${getValue('sig_guardian_name')} - Date: ${formatDate(getValue('sig_guardian_date'))}</div>
+                        </div>
+                        <div>
+                            <div class="sig-line"></div>
+                            <div class="sig-label">WCHC Staff: ${getValue('sig_staff_name')} - Date: ${formatDate(getValue('sig_staff_date'))}</div>
+                        </div>
+                        ${includeSupervisor ? `
+                        <div>
+                            <div class="sig-line"></div>
+                            <div class="sig-label">Supervisor: ${getValue('sig_supervisor_name')} - Date: ${formatDate(getValue('sig_supervisor_date'))}</div>
+                        </div>` : ''}
+                    </div>
+                </div>
+            </main>
+        </div></body></html>`;
+
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(printContents);
+        printWindow.document.close();
+        printWindow.focus();
+        setTimeout(() => { printWindow.print(); }, 500);
+    }
+
+    // --- UNIVERSAL FUNCTIONS (unchanged across forms) ---
+    function getFormData() {
+        const form = document.getElementById(FORM_ELEMENT_ID);
+        const formData = new FormData(form);
+        const data = { formId: FORM_ID, lastModified: new Date().toISOString() };
+        for (const [key, value] of formData.entries()) {
+            const cleanKey = key.replace(/\[\]$/, '');
+            if (key.endsWith('[]')) {
+                if (!data[cleanKey]) data[cleanKey] = [];
+                data[cleanKey].push(value);
+            } else { data[key] = value; }
+        }
+        if (document.getElementById('toggleSupervisorSig')) data.toggleSupervisorSig = document.getElementById('toggleSupervisorSig').checked;
+        return data;
+    }
+    function populateForm(data) {
+        const form = document.getElementById(FORM_ELEMENT_ID);
+        form.reset();
+        for (const key in data) {
+            if (key === 'formId' || key === 'lastModified') continue;
+            const elements = form.elements[key] || form.elements[key + '[]'];
+            if (!elements) continue;
+            const value = data[key];
+            const elementList = elements.nodeName ? [elements] : Array.from(elements);
+            const firstEl = elementList[0];
+            if (firstEl.type === 'checkbox') {
+                const values = Array.isArray(value) ? value : [value];
+                elementList.forEach(el => { el.checked = values.includes(el.value) || (value === true && el.name === key); });
+            } else if (firstEl.type === 'radio') {
+                elementList.forEach(el => { if (el.value === value) el.checked = true; });
+            } else { if (firstEl.value !== undefined) firstEl.value = value; }
+        }
+        if (document.getElementById('toggleSupervisorSig')) document.getElementById('toggleSupervisorSig').dispatchEvent(new Event('change'));
+        if (document.getElementById('dob')) document.getElementById('dob').dispatchEvent(new Event('input'));
+    }
+    function saveToLocalStorage() {
+        const data = getFormData();
+        const clientName = data.clientName.trim();
+        if (!clientName) { alert('Please enter a Client Name before saving.'); return }
+        const key = `savedForm_${FORM_ID}_${clientName}`;
+        try {
+            localStorage.setItem(key, JSON.stringify(data));
+            alert(`Progress for ${clientName} saved successfully!`)
+        } catch (e) {
+            if (e.name === 'QuotaExceededError') {
+                alert('Error: Browser storage is full. Please export and then delete some older saved forms to make space.');
+            } else {
+                alert('An unknown error occurred while saving.'); console.error(e)
+            }
+        }
+    }
+    function displaySavedForms() {
+        const savedFormsList = document.getElementById('savedFormsList');
+        savedFormsList.innerHTML = '';
+        let savedItems = [];
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key.startsWith(`savedForm_${FORM_ID}_`)) {
+                try {
+                    const data = JSON.parse(localStorage.getItem(key));
+                    savedItems.push({ key, data })
+                } catch (e) { console.error('Could not parse saved data:', key, e) }
+            }
+        }
+        savedItems.sort((a, b) => new Date(b.data.lastModified) - new Date(a.data.lastModified));
+        if (savedItems.length === 0) {
+            savedFormsList.innerHTML = `<p class="text-gray-500">No saved forms found in this browser.</p>`
+        } else {
+            savedItems.forEach(item => {
+                const clientName = item.data.clientName || 'Unnamed';
+                const lastModified = new Date(item.data.lastModified).toLocaleString();
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'modal-item';
+                itemDiv.innerHTML = `<div class="flex-grow" onclick="loadSelectedForm('${item.key}')"><strong class="item-name">${clientName}</strong><br><small>Last saved: ${lastModified}</small></div><button onclick="deleteSavedForm(event,'${item.key}')"class="delete-btn">Delete</button>`;
+                savedFormsList.appendChild(itemDiv)
+            })
+        }
+        document.getElementById('loadModal').classList.remove('hidden');
+        document.getElementById('modalSearch').value = '';
+        document.getElementById('modalSearch').focus()
+    }
+    function filterModalItems() {
+        const searchTerm = document.getElementById('modalSearch').value.toLowerCase();
+        document.querySelectorAll('.modal-item').forEach(item => {
+            const name = item.querySelector('.item-name').textContent.toLowerCase();
+            item.style.display = name.includes(searchTerm) ? 'flex' : 'none'
+        })
+    }
+    function loadSelectedForm(key) {
+        const data = JSON.parse(localStorage.getItem(key));
+        populateForm(data);
+        closeModal();
+        alert(`Data for ${data.clientName} has been loaded.`)
+    }
+    function deleteSavedForm(event, key) {
+        event.stopPropagation();
+        const data = JSON.parse(localStorage.getItem(key));
+        const clientName = data.clientName || 'this entry';
+        if (confirm(`Are you sure you want to permanently delete the saved data for ${clientName}? This cannot be undone.`)) {
+            localStorage.removeItem(key);
+            displaySavedForms();
+            filterModalItems()
+        }
+    }
+    function closeModal() { document.getElementById('loadModal').classList.add('hidden') }
+    function parseClientName(nameStr) {
+        let [lastName, firstName] = ['Unknown', 'Client'];
+        if (nameStr) {
+            if (nameStr.includes(',')) {
+                [lastName, firstName] = nameStr.split(',', 2).map(s => s.trim())
+            } else {
+                const parts = nameStr.trim().split(' ');
+                lastName = parts.pop() || 'Unknown';
+                firstName = parts.join(' ') || 'Client'
+            }
+        }
+        return [lastName, firstName]
+    }
+    function exportData() {
+        const data = getFormData();
+        if (!data.clientName.trim()) { alert('Please enter a Client Name before exporting.'); return }
+        const [lastName, firstName] = parseClientName(data.clientName);
+        const filename = `${formatDate(data.date) || 'NODATE'}_${lastName}_${firstName}_${FORM_ID}.json`;
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        link.click();
+        URL.revokeObjectURL(link.href)
+    }
+    function importData(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            try {
+                const data = JSON.parse(e.target.result);
+                if (data.formId !== FORM_ID) {
+                    alert(`Error: Incompatible File\n\nThis file is for the '${data.formId || 'Unknown Form'}'. You are currently on the '${FORM_ID}' form.`);
+                    return
+                }
+                populateForm(data);
+                alert('Client data imported successfully from file!')
+            } catch (error) { alert('An error occurred while reading this file.'); console.error("Import Error: ", error) }
+        };
+        reader.readAsText(file);
+        event.target.value = ''
+    }
+    function clearForm() {
+        if (confirm("Are you sure you want to clear all fields on this form? This cannot be undone.")) {
+            document.getElementById(FORM_ELEMENT_ID).reset();
+            initializeFormDefaults();
+            alert('Form has been cleared.');
+        }
+    }
+
+    // --- FORM-SPECIFIC HELPER FUNCTIONS ---
+    function initializeFormDefaults() {
+        const mainDateInput = document.getElementById('dateOfPlan');
+        if (mainDateInput) mainDateInput.valueAsDate = new Date();
+        syncSignatureDates();
+    }
+    function syncSignatureDates() {
+        const mainDateValue = document.getElementById('dateOfPlan').value;
+        document.querySelectorAll('#signature-container input[type="date"]').forEach(input => {
+            if (input) input.value = mainDateValue;
+        });
+    }
+    function updateAgeAndFooter() {
+        document.getElementById('footer_client_name').value = document.getElementById('clientName').value;
+        document.getElementById('footer_dob').value = document.getElementById('dob').value;
+        document.getElementById('footer_mrn').value = document.getElementById('mrn').value;
+
+        // NEW: Auto-populate signature names
+        const sigClient = document.querySelector('input[name="sig_client_name"]');
+        if (sigClient) sigClient.value = document.getElementById('clientName').value;
+        const sigGuardian = document.querySelector('input[name="sig_guardian_name"]');
+        if (sigGuardian) sigGuardian.value = document.getElementById('guardianName').value;
+        const sigStaff = document.querySelector('input[name="sig_staff_name"]');
+        if (sigStaff) sigStaff.value = document.getElementById('staffName').value;
+        const sigSupervisor = document.querySelector('input[name="sig_supervisor_name"]');
+        if (sigSupervisor) sigSupervisor.value = document.getElementById('supervisorName').value;
+    }
+    function createNavigation() {
+        const navContainer = document.getElementById('form-nav');
+        if (!navContainer) return;
+        navContainer.innerHTML = '';
+        document.querySelectorAll('div[id^="section-"]').forEach(section => {
+            const title = section.querySelector('h3')?.textContent;
+            if (title) {
+                const link = document.createElement('a');
+                link.href = `#${section.id}`;
+                link.className = 'nav-link';
+                link.tabIndex = 0;
+                link.setAttribute('aria-label', `Jump to ${title}`);
+                link.textContent = title;
+                link.onclick = (e) => { e.preventDefault(); section.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+                navContainer.appendChild(link);
+            }
+        });
+    }
+    function createNumberedListInputs(containerId, baseName, count) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        for (let i = 1; i <= count; i++) {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = `${baseName}_${i}`;
+            input.className = 'form-input';
+            input.placeholder = `#${i}`;
+            container.appendChild(input);
+        }
+    }
+    function createDynamicLists() {
+        const dxContainer = document.getElementById('diagnosis-list');
+        for (let i = 1; i <= 5; i++) {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = `diagnosis_${i}`;
+            input.className = 'form-input';
+            input.placeholder = `Diagnosis ${i}`;
+            dxContainer.appendChild(input);
+        }
+        const medContainer = document.getElementById('medication-list');
+        for (let i = 1; i <= 5; i++) {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = `medication_${i}`;
+            input.className = 'form-input';
+            input.placeholder = `Medication/Dosage ${i}`;
+            medContainer.appendChild(input);
+        }
+        const supportsContainer = document.getElementById('emergency-supports-list');
+        const supports = ["Local Police", "WCHC Staff", "WCHC Staff ", "Crisis Number", "Family Identified Emergency Support", "Family Identified Emergency Support "];
+        supports.forEach((support, i) => {
+            const div = document.createElement('div');
+            div.innerHTML = `<label for="support_contact_${i}" class="form-label">${support}</label><input type="text" id="support_contact_${i}" name="support_contact_${i}" class="form-input">`;
+            supportsContainer.appendChild(div);
+        });
+    }
+    function createActionSteps() {
+        const container = document.getElementById('action-steps-container');
+        for (let i = 1; i <= 3; i++) {
+            const div = document.createElement('div');
+            div.className = 'p-4 border rounded-lg bg-gray-50';
+            div.innerHTML = `<h4 class="font-semibold mb-2">Concern #${i}</h4><label for="concern_${i}" class="form-label text-sm">Safety Concern:</label><textarea id="concern_${i}" name="concern_${i}" class="form-textarea mb-2" rows="2"></textarea><label for="action_step_${i}" class="form-label text-sm">Safety Action Step:</label><textarea id="action_step_${i}" name="action_step_${i}" class="form-textarea mb-2" rows="2"></textarea><div class="grid grid-cols-2 gap-4"><div><label for="responsible_${i}" class="form-label text-sm">Person(s) Responsible:</label><input type="text" id="responsible_${i}" name="responsible_${i}" class="form-input"></div><div><label for="completed_date_${i}" class="form-label text-sm">Date Completed:</label><input type="date" id="completed_date_${i}" name="completed_date_${i}" class="form-input"></div></div>`;
+            container.appendChild(div);
+        }
+    }
+    function createSignatures() {
+        const container = document.getElementById('signature-container');
+        container.innerHTML = '';
+        const roles = [
+            { title: 'Client', name: 'sig_client' },
+            { title: 'Parent/Guardian', name: 'sig_guardian' },
+            { title: 'WCHC Staff', name: 'sig_staff' }
+        ];
+        roles.forEach(role => {
+            const div = document.createElement('div');
+            div.className = 'grid grid-cols-1 md:grid-cols-3 gap-4 items-end pt-4 border-t first:border-t-0';
+            div.innerHTML = `<div><label class="form-label text-sm">${role.title} Signature</label><div class="signature-line"></div></div><div><label class="form-label text-sm">Printed Name</label><input type="text" name="${role.name}_name" class="form-input"></div><div><label class="form-label text-sm">Date</label><input type="date" name="${role.name}_date" class="form-input"></div>`;
+            container.appendChild(div);
+        });
+        const supervisorBlock = document.createElement('div');
+        supervisorBlock.className = 'pt-4 mt-4 border-t';
+        supervisorBlock.innerHTML = `<label class="flex items-center font-semibold"><input type="checkbox" id="toggleSupervisorSig" name="toggleSupervisorSig" value="true" class="h-4 w-4 rounded"><span class="ml-2">Include Supervisor Signature</span></label><div id="supervisorSigBlock" class="hidden mt-4"><div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end"><div><label class="form-label text-sm">Supervisor Signature</label><div class="signature-line"></div></div><div><label class="form-label text-sm">Printed Name</label><input type="text" name="sig_supervisor_name" class="form-input"></div><div><label class="form-label text-sm">Date</label><input type="date" name="sig_supervisor_date" class="form-input"></div></div></div>`;
+        container.appendChild(supervisorBlock);
+    }
+    function setupSignatureToggle(checkboxId, blockId) {
+        const checkbox = document.getElementById(checkboxId);
+        const block = document.getElementById(blockId);
+        if (!checkbox || !block) return;
+        checkbox.addEventListener('change', () => {
+            block.classList.toggle('hidden', !checkbox.checked);
+            if (!checkbox.checked) {
+                block.querySelectorAll('input').forEach(input => input.value = '');
+            } else {
+                block.querySelectorAll('input[type="date"]').forEach(dateInput => {
+                    if (!dateInput.value) { dateInput.value = document.getElementById('dateOfPlan').value; }
+                });
+            }
+        });
+    }
+
+    // --- PAGE INITIALIZATION ---
+    document.addEventListener('DOMContentLoaded', () => {
+        createNavigation();
+        createDynamicLists();
+        createNumberedListInputs('triggers-list', 'trigger', 4);
+        createNumberedListInputs('coping-skills-list', 'coping_skill', 4);
+        createNumberedListInputs('deescalation-list', 'deescalation_strategy', 4);
+        createActionSteps();
+        createSignatures();
+
+        ['dateOfPlan', 'clientName', 'dob', 'mrn', 'staffName', 'supervisorName', 'guardianName'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener('input', updateAgeAndFooter);
+        });
+
+        if (document.getElementById('modalSearch')) document.getElementById('modalSearch').addEventListener('keyup', filterModalItems);
+
+        setupSignatureToggle('toggleSupervisorSig', 'supervisorSigBlock');
+
+        initializeFormDefaults();
+    });
+    // Prevent accidental form clear on Enter key press in input fields
+document.getElementById('safetyPlanForm').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    // Allow Enter in textarea and for button elements only
+    if (
+      e.target.tagName !== 'TEXTAREA' &&
+      e.target.type !== 'submit' &&
+      e.target.type !== 'button'
+    ) {
+      e.preventDefault();
+      return false;
+    }
+  }
+});
+</script>
+</body>
+</html>
