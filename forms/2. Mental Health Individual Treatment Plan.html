@@ -899,7 +899,7 @@
     </div>`;
 
     // Build Signatures
-   // Build Signatures
+   // FIX: Build Signatures using boolean flags from data
 const buildSignatures = () => {
     let html = '<div class="signature-grid">';
     
@@ -913,32 +913,32 @@ const buildSignatures = () => {
         <span class="signature-label">Staff/Credentials: ${escapeHtml(getValue('sig_staff_name'))} - Date: ${formatDate(getValue('sig_staff_date'))}</span>
     </div>`;
     
-    // Optional signatures (only show if checkbox was checked)
-    if (getValue('include_parent_sig')) {
+    // FIX: Optional signatures - check boolean flags stored on data object
+    if (data.include_parent_sig) {
         html += `<div class="signature-box">
             <div class="signature-line"></div>
             <span class="signature-label">Parent/Legally Authorized Representative: ${escapeHtml(getValue('sig_parent_name'))} - Date: ${formatDate(getValue('sig_parent_date'))}</span>
         </div>`;
     }
-    if (getValue('include_other_sig')) {
+    if (data.include_other_sig) {
         html += `<div class="signature-box">
             <div class="signature-line"></div>
             <span class="signature-label">Other (${escapeHtml(getValue('sig_other_specify'))}): ${escapeHtml(getValue('sig_other_name'))} - Date: ${formatDate(getValue('sig_other_date'))}</span>
         </div>`;
     }
-    if (getValue('include_provider_sig')) {
+    if (data.include_provider_sig) {
         html += `<div class="signature-box">
             <div class="signature-line"></div>
             <span class="signature-label">Provider/Credentials: ${escapeHtml(getValue('sig_provider_name'))} - Date: ${formatDate(getValue('sig_provider_date'))}</span>
         </div>`;
     }
-    if (getValue('include_supervisor_sig')) {
+    if (data.include_supervisor_sig) {
         html += `<div class="signature-box">
             <div class="signature-line"></div>
             <span class="signature-label">Supervisor/Credentials: ${escapeHtml(getValue('sig_supervisor_name'))} - Date: ${formatDate(getValue('sig_supervisor_date'))}</span>
         </div>`;
     }
-    if (getValue('include_physician_sig')) {
+    if (data.include_physician_sig) {
         html += `<div class="signature-box">
             <div class="signature-line"></div>
             <span class="signature-label">Physician Signature/Credentials: ${escapeHtml(getValue('sig_physician_name'))} - Date: ${formatDate(getValue('sig_physician_date'))}</span>
@@ -1042,7 +1042,40 @@ function getFormData() {
     
     return data;
 }
-    function populateForm(data){const form=document.getElementById(FORM_ELEMENT_ID);form.reset();for(const key in data){if(key==='formId'||key==='lastModified')continue;const elements=form.elements[key]||form.elements[key+'[]'];if(!elements)continue;const value=data[key];const elementList=elements.nodeName?[elements]:Array.from(elements);const firstEl=elementList[0];if(firstEl.type==='checkbox'){const values=Array.isArray(value)?value:[value];elementList.forEach(el=>{el.checked=values.includes(el.value)})}else if(firstEl.type==='radio'){elementList.forEach(el=>{if(el.value===value)el.checked=true})}else{if(firstEl.value!==undefined)firstEl.value=value}}form.querySelectorAll('[onchange]').forEach(el=>el.dispatchEvent(new Event('change')));if(document.getElementById('dob'))document.getElementById('dob').dispatchEvent(new Event('input'))}
+    // FIX: Enhanced populateForm to handle boolean checkbox values properly
+    function populateForm(data) {
+        const form = document.getElementById(FORM_ELEMENT_ID);
+        form.reset();
+        for (const key in data) {
+            if (key === 'formId' || key === 'lastModified') continue;
+            const elements = form.elements[key] || form.elements[key + '[]'];
+            if (!elements) continue;
+            const value = data[key];
+            const elementList = elements.nodeName ? [elements] : Array.from(elements);
+            const firstEl = elementList[0];
+            if (firstEl.type === 'checkbox') {
+                // FIX: Handle three cases - array, string, or boolean
+                if (Array.isArray(value)) {
+                    elementList.forEach(el => { el.checked = value.includes(el.value); });
+                } else if (typeof value === 'boolean') {
+                    elementList.forEach(el => { el.checked = value; });
+                } else {
+                    elementList.forEach(el => { el.checked = el.value === value; });
+                }
+            } else if (firstEl.type === 'radio') {
+                elementList.forEach(el => { if (el.value === value) el.checked = true; });
+            } else {
+                if (firstEl.value !== undefined) firstEl.value = value;
+            }
+        }
+        // FIX: Dispatch change events for toggle checkboxes to show/hide signature blocks
+        ['include_parent_sig', 'include_other_sig', 'include_provider_sig', 'include_supervisor_sig', 'include_physician_sig'].forEach(id => {
+            const checkbox = document.getElementById(id);
+            if (checkbox) checkbox.dispatchEvent(new Event('change'));
+        });
+        form.querySelectorAll('[onchange]').forEach(el => el.dispatchEvent(new Event('change')));
+        if (document.getElementById('dob')) document.getElementById('dob').dispatchEvent(new Event('input'));
+    }
     function saveToLocalStorage(){const data=getFormData();const clientName=data.clientName.trim();if(!clientName){alert('Please enter a Client Name before saving.');return}const key=`savedForm_${FORM_ID}_${clientName}`;try{localStorage.setItem(key,JSON.stringify(data));alert(`Progress for ${clientName} saved successfully!`)}catch(e){if(e.name==='QuotaExceededError'){alert('Error: Browser storage is full. Please export and then delete some older saved forms to make space.')}else{alert('An unknown error occurred while saving.');console.error(e)}}}
     function displaySavedForms(){const savedFormsList=document.getElementById('savedFormsList');savedFormsList.innerHTML='';let savedItems=[];for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i);if(key.startsWith(`savedForm_${FORM_ID}_`)){try{const data=JSON.parse(localStorage.getItem(key));savedItems.push({key,data})}catch(e){console.error('Could not parse saved data:',key,e)}}}savedItems.sort((a,b)=>new Date(b.data.lastModified)-new Date(a.data.lastModified));if(savedItems.length===0){savedFormsList.innerHTML=`<p class="text-gray-500">No saved forms found in this browser.</p>`}else{savedItems.forEach(item=>{const clientName=item.data.clientName||'Unnamed';const lastModified=new Date(item.data.lastModified).toLocaleString();const itemDiv=document.createElement('div');itemDiv.className='modal-item';itemDiv.innerHTML=`<div class="flex-grow" onclick="loadSelectedForm('${item.key}')"><strong class="item-name">${clientName}</strong><br><small>Last saved: ${lastModified}</small></div><button onclick="deleteSavedForm(event,'${item.key}')"class="delete-btn">Delete</button>`;savedFormsList.appendChild(itemDiv)})}document.getElementById('loadModal').classList.remove('hidden');document.getElementById('modalSearch').value='';document.getElementById('modalSearch').focus()}
     function filterModalItems(){const searchTerm=document.getElementById('modalSearch').value.toLowerCase();document.querySelectorAll('.modal-item').forEach(item=>{const name=item.querySelector('.item-name').textContent.toLowerCase();item.style.display=name.includes(searchTerm)?'flex':'none'})}
@@ -1053,22 +1086,25 @@ function getFormData() {
     function exportData(){const data=getFormData();if(!data.clientName.trim()){alert('Please enter a Client Name before exporting.');return}const[lastName,firstName]=parseClientName(data.clientName);const filename=`${formatDate(data.date)||'NODATE'}_${lastName}_${firstName}_${FORM_ID}.json`;const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download=filename;link.click();URL.revokeObjectURL(link.href)}
     function importData(event){const file=event.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=function(e){try{const data=JSON.parse(e.target.result);if(data.formId!==FORM_ID){alert(`Error: Incompatible File\n\nThis file is for the '${data.formId||'Unknown Form'}'. You are currently on the '${FORM_ID}' form.`);return}populateForm(data);alert('Client data imported successfully from file!')}catch(error){alert('An error occurred while reading this file.');console.error("Import Error: ",error)}};reader.readAsText(file);event.target.value=''}
     function clearForm(){if(confirm("Are you sure you want to clear all fields on this form? This cannot be undone.")){document.getElementById(FORM_ELEMENT_ID).reset();initializeFormDefaults();alert('Form has been cleared.')}}
+    // FIX: Auto-fill target completion dates with timezone-safe logic
     function setTargetCompletionDates() {
-    const mainDate = document.getElementById('date');
-    const targetDate = document.getElementById('target_completion_date');
-    const newTargetDate = document.getElementById('new_target_date');
-    
-    if (mainDate && mainDate.value) {
-        const originalDate = new Date(mainDate.value);
-        const oneYearLater = new Date(originalDate);
-        oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
+        const mainDate = document.getElementById('date');
+        const targetDate = document.getElementById('target_completion_date');
+        const newTargetDate = document.getElementById('new_target_date');
         
-        const formattedDate = oneYearLater.toISOString().split('T')[0];
-        
-        if (targetDate && !targetDate.value) targetDate.value = formattedDate;
-        if (newTargetDate && !newTargetDate.value) newTargetDate.value = formattedDate;
+        if (mainDate && mainDate.value) {
+            // FIX: Use local midnight normalization to avoid timezone issues
+            const originalDate = new Date(mainDate.value + 'T00:00:00');
+            const oneYearLater = new Date(originalDate);
+            oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
+            
+            const formattedDate = oneYearLater.toISOString().split('T')[0];
+            
+            // Only set if blank so user can edit
+            if (targetDate && !targetDate.value) targetDate.value = formattedDate;
+            if (newTargetDate && !newTargetDate.value) newTargetDate.value = formattedDate;
+        }
     }
-}
     // --- FORM-SPECIFIC HELPERS ---
     function initializeFormDefaults(){if(document.getElementById('date'))document.getElementById('date').valueAsDate=new Date();if(typeof setupInitialDates==='function')setupInitialDates();if(typeof updateAgeAndFooter==='function')updateAgeAndFooter()}
     function setupInitialDates(){const today=new Date().toISOString().split('T')[0];['date','sig_client_date','sig_staff_date','sig_parent_date','sig_other_date','sig_provider_date','sig_supervisor_date','sig_physician_date'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=today})}
@@ -1097,11 +1133,19 @@ function updateAgeAndFooter() {
     updateFooterInfo();
 }
 
+// FIX: Update footer fields and auto-populate signature names
 function updateFooterInfo() {
-    document.getElementById('footer_client_name').value = document.getElementById('clientName').value;
+    const clientName = document.getElementById('clientName').value;
+    document.getElementById('footer_client_name').value = clientName;
     document.getElementById('footer_dob').value = document.getElementById('dob').value;
     document.getElementById('footer_record_number').value = document.getElementById('recordNumber').value;
-}    function updateFooterInfo(){document.getElementById('footer_client_name').value=document.getElementById('clientName').value;document.getElementById('footer_dob').value=document.getElementById('dob').value;document.getElementById('footer_record_number').value=document.getElementById('recordNumber').value}
+    
+    // Auto-populate signature client name if field exists and is empty
+    const sigClientName = document.getElementById('sig_client_name');
+    if (sigClientName && !sigClientName.value && clientName) {
+        sigClientName.value = clientName;
+    }
+}
     function updateNavigation(){const navContainer=document.getElementById('form-nav');if(!navContainer)return;navContainer.innerHTML='';document.querySelectorAll('div[id^="section-"]').forEach(section=>{const title=section.querySelector('h3')?.textContent;if(title){const link=document.createElement('a');link.href=`#${section.id}`;link.className='nav-link';link.textContent=title;navContainer.appendChild(link)}})}
     function buildDiagnosisGrid(){const diagnosisGrid=document.getElementById('diagnosis-grid');if(!diagnosisGrid)return;for(let i=0;i<10;i++){const row=document.createElement('div');row.className='grid grid-cols-1 md:grid-cols-3 gap-4';row.innerHTML=`<div><input type="text" name="diagnosis_name_${i}" class="form-input"></div><div><input type="text" name="diagnosis_code_${i}" class="form-input"></div><div><input type="date" name="diagnosis_date_${i}" class="form-input"></div>`;diagnosisGrid.appendChild(row)}}
     function toggleSignatureSection(sectionType){const checkbox=document.getElementById(`include_${sectionType}_sig`);const section=document.getElementById(`${sectionType}_signature_section`);if(checkbox.checked){section.classList.remove('hidden')}else{section.classList.add('hidden');const inputs=section.querySelectorAll('input');inputs.forEach(input=>input.value='')}}
@@ -1116,7 +1160,19 @@ function updateFooterInfo() {
     initializeFormDefaults();
     setupInitialDates();
     
-    // Add target completion date auto-fill
+    // FIX: Wire signature toggle handlers on page load
+    ['parent', 'other', 'provider', 'supervisor', 'physician'].forEach(type => {
+        const checkbox = document.getElementById(`include_${type}_sig`);
+        if (checkbox) {
+            checkbox.addEventListener('change', () => toggleSignatureSection(type));
+            // Trigger initial state
+            if (checkbox.checked) {
+                toggleSignatureSection(type);
+            }
+        }
+    });
+    
+    // FIX: Wire date input to trigger setTargetCompletionDates
     const dateInput = document.getElementById('date');
     if (dateInput) {
         dateInput.addEventListener('change', setTargetCompletionDates);
