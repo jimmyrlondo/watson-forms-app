@@ -899,54 +899,55 @@
     </div>`;
 
     // Build Signatures
-    const buildSignatures = () => {
-        let html = '<div class="signature-grid">';
-        
-        // Required signatures
+   // Build Signatures
+const buildSignatures = () => {
+    let html = '<div class="signature-grid">';
+    
+    // Required signatures
+    html += `<div class="signature-box">
+        <div class="signature-line"></div>
+        <span class="signature-label">Client's Signature: ${escapeHtml(getValue('sig_client_name'))} - Date: ${formatDate(getValue('sig_client_date'))}</span>
+    </div>`;
+    html += `<div class="signature-box">
+        <div class="signature-line"></div>
+        <span class="signature-label">Staff/Credentials: ${escapeHtml(getValue('sig_staff_name'))} - Date: ${formatDate(getValue('sig_staff_date'))}</span>
+    </div>`;
+    
+    // Optional signatures (only show if checkbox was checked)
+    if (getValue('include_parent_sig')) {
         html += `<div class="signature-box">
             <div class="signature-line"></div>
-            <span class="signature-label">Client's Signature: ${escapeHtml(getValue('sig_client_name'))} - Date: ${formatDate(getValue('sig_client_date'))}</span>
+            <span class="signature-label">Parent/Legally Authorized Representative: ${escapeHtml(getValue('sig_parent_name'))} - Date: ${formatDate(getValue('sig_parent_date'))}</span>
         </div>`;
+    }
+    if (getValue('include_other_sig')) {
         html += `<div class="signature-box">
             <div class="signature-line"></div>
-            <span class="signature-label">Staff/Credentials: ${escapeHtml(getValue('sig_staff_name'))} - Date: ${formatDate(getValue('sig_staff_date'))}</span>
+            <span class="signature-label">Other (${escapeHtml(getValue('sig_other_specify'))}): ${escapeHtml(getValue('sig_other_name'))} - Date: ${formatDate(getValue('sig_other_date'))}</span>
         </div>`;
-        
-        // Optional signatures (only show if checkbox was checked)
-        if (getValue('include_parent_sig')) {
-            html += `<div class="signature-box">
-                <div class="signature-line"></div>
-                <span class="signature-label">Parent/Legally Authorized Representative: ${escapeHtml(getValue('sig_parent_name'))} - Date: ${formatDate(getValue('sig_parent_date'))}</span>
-            </div>`;
-        }
-        if (getValue('include_other_sig')) {
-            html += `<div class="signature-box">
-                <div class="signature-line"></div>
-                <span class="signature-label">Other (${escapeHtml(getValue('sig_other_specify'))}): ${escapeHtml(getValue('sig_other_name'))} - Date: ${formatDate(getValue('sig_other_date'))}</span>
-            </div>`;
-        }
-        if (getValue('include_provider_sig')) {
-            html += `<div class="signature-box">
-                <div class="signature-line"></div>
-                <span class="signature-label">Provider/Credentials: ${escapeHtml(getValue('sig_provider_name'))} - Date: ${formatDate(getValue('sig_provider_date'))}</span>
-            </div>`;
-        }
-        if (getValue('include_supervisor_sig')) {
-            html += `<div class="signature-box">
-                <div class="signature-line"></div>
-                <span class="signature-label">Supervisor/Credentials: ${escapeHtml(getValue('sig_supervisor_name'))} - Date: ${formatDate(getValue('sig_supervisor_date'))}</span>
-            </div>`;
-        }
-        if (getValue('include_physician_sig')) {
-            html += `<div class="signature-box">
-                <div class="signature-line"></div>
-                <span class="signature-label">Physician Signature/Credentials: ${escapeHtml(getValue('sig_physician_name'))} - Date: ${formatDate(getValue('sig_physician_date'))}</span>
-            </div>`;
-        }
-        
-        html += '</div>';
-        return html;
-    };
+    }
+    if (getValue('include_provider_sig')) {
+        html += `<div class="signature-box">
+            <div class="signature-line"></div>
+            <span class="signature-label">Provider/Credentials: ${escapeHtml(getValue('sig_provider_name'))} - Date: ${formatDate(getValue('sig_provider_date'))}</span>
+        </div>`;
+    }
+    if (getValue('include_supervisor_sig')) {
+        html += `<div class="signature-box">
+            <div class="signature-line"></div>
+            <span class="signature-label">Supervisor/Credentials: ${escapeHtml(getValue('sig_supervisor_name'))} - Date: ${formatDate(getValue('sig_supervisor_date'))}</span>
+        </div>`;
+    }
+    if (getValue('include_physician_sig')) {
+        html += `<div class="signature-box">
+            <div class="signature-line"></div>
+            <span class="signature-label">Physician Signature/Credentials: ${escapeHtml(getValue('sig_physician_name'))} - Date: ${formatDate(getValue('sig_physician_date'))}</span>
+        </div>`;
+    }
+    
+    html += '</div>';
+    return html;
+};
 
     const printWindow = window.open('', '_blank');
     printWindow.document.write(`<html><head><title>${FORM_NAME_PRINT} - ${getValue('clientName')}</title>
@@ -1021,7 +1022,26 @@
 }
 
     // --- UNIVERSAL FUNCTIONS ---
-    function getFormData(){const form=document.getElementById(FORM_ELEMENT_ID);const formData=new FormData(form);const data={formId:FORM_ID,lastModified:new Date().toISOString()};for(const[key,value]of formData.entries()){const cleanKey=key.replace(/\[\]$/,'');if(key.endsWith('[]')){if(!data[cleanKey])data[cleanKey]=[];data[cleanKey].push(value)}else{data[key]=value}}return data}
+function getFormData() {
+    const form = document.getElementById(FORM_ELEMENT_ID);
+    const formData = new FormData(form);
+    const data = { formId: FORM_ID, lastModified: new Date().toISOString() };
+    for (const [key, value] of formData.entries()) {
+        const cleanKey = key.replace(/\[\]$/, '');
+        if (key.endsWith('[]')) {
+            if (!data[cleanKey]) data[cleanKey] = [];
+            data[cleanKey].push(value);
+        } else { data[key] = value; }
+    }
+    
+    // Capture checkbox states for optional signatures
+    ['include_parent_sig', 'include_other_sig', 'include_provider_sig', 'include_supervisor_sig', 'include_physician_sig'].forEach(checkboxId => {
+        const checkbox = document.getElementById(checkboxId);
+        if (checkbox) data[checkboxId] = checkbox.checked;
+    });
+    
+    return data;
+}
     function populateForm(data){const form=document.getElementById(FORM_ELEMENT_ID);form.reset();for(const key in data){if(key==='formId'||key==='lastModified')continue;const elements=form.elements[key]||form.elements[key+'[]'];if(!elements)continue;const value=data[key];const elementList=elements.nodeName?[elements]:Array.from(elements);const firstEl=elementList[0];if(firstEl.type==='checkbox'){const values=Array.isArray(value)?value:[value];elementList.forEach(el=>{el.checked=values.includes(el.value)})}else if(firstEl.type==='radio'){elementList.forEach(el=>{if(el.value===value)el.checked=true})}else{if(firstEl.value!==undefined)firstEl.value=value}}form.querySelectorAll('[onchange]').forEach(el=>el.dispatchEvent(new Event('change')));if(document.getElementById('dob'))document.getElementById('dob').dispatchEvent(new Event('input'))}
     function saveToLocalStorage(){const data=getFormData();const clientName=data.clientName.trim();if(!clientName){alert('Please enter a Client Name before saving.');return}const key=`savedForm_${FORM_ID}_${clientName}`;try{localStorage.setItem(key,JSON.stringify(data));alert(`Progress for ${clientName} saved successfully!`)}catch(e){if(e.name==='QuotaExceededError'){alert('Error: Browser storage is full. Please export and then delete some older saved forms to make space.')}else{alert('An unknown error occurred while saving.');console.error(e)}}}
     function displaySavedForms(){const savedFormsList=document.getElementById('savedFormsList');savedFormsList.innerHTML='';let savedItems=[];for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i);if(key.startsWith(`savedForm_${FORM_ID}_`)){try{const data=JSON.parse(localStorage.getItem(key));savedItems.push({key,data})}catch(e){console.error('Could not parse saved data:',key,e)}}}savedItems.sort((a,b)=>new Date(b.data.lastModified)-new Date(a.data.lastModified));if(savedItems.length===0){savedFormsList.innerHTML=`<p class="text-gray-500">No saved forms found in this browser.</p>`}else{savedItems.forEach(item=>{const clientName=item.data.clientName||'Unnamed';const lastModified=new Date(item.data.lastModified).toLocaleString();const itemDiv=document.createElement('div');itemDiv.className='modal-item';itemDiv.innerHTML=`<div class="flex-grow" onclick="loadSelectedForm('${item.key}')"><strong class="item-name">${clientName}</strong><br><small>Last saved: ${lastModified}</small></div><button onclick="deleteSavedForm(event,'${item.key}')"class="delete-btn">Delete</button>`;savedFormsList.appendChild(itemDiv)})}document.getElementById('loadModal').classList.remove('hidden');document.getElementById('modalSearch').value='';document.getElementById('modalSearch').focus()}
@@ -1033,26 +1053,76 @@
     function exportData(){const data=getFormData();if(!data.clientName.trim()){alert('Please enter a Client Name before exporting.');return}const[lastName,firstName]=parseClientName(data.clientName);const filename=`${formatDate(data.date)||'NODATE'}_${lastName}_${firstName}_${FORM_ID}.json`;const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download=filename;link.click();URL.revokeObjectURL(link.href)}
     function importData(event){const file=event.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=function(e){try{const data=JSON.parse(e.target.result);if(data.formId!==FORM_ID){alert(`Error: Incompatible File\n\nThis file is for the '${data.formId||'Unknown Form'}'. You are currently on the '${FORM_ID}' form.`);return}populateForm(data);alert('Client data imported successfully from file!')}catch(error){alert('An error occurred while reading this file.');console.error("Import Error: ",error)}};reader.readAsText(file);event.target.value=''}
     function clearForm(){if(confirm("Are you sure you want to clear all fields on this form? This cannot be undone.")){document.getElementById(FORM_ELEMENT_ID).reset();initializeFormDefaults();alert('Form has been cleared.')}}
-
+    function setTargetCompletionDates() {
+    const mainDate = document.getElementById('date');
+    const targetDate = document.getElementById('target_completion_date');
+    const newTargetDate = document.getElementById('new_target_date');
+    
+    if (mainDate && mainDate.value) {
+        const originalDate = new Date(mainDate.value);
+        const oneYearLater = new Date(originalDate);
+        oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
+        
+        const formattedDate = oneYearLater.toISOString().split('T')[0];
+        
+        if (targetDate && !targetDate.value) targetDate.value = formattedDate;
+        if (newTargetDate && !newTargetDate.value) newTargetDate.value = formattedDate;
+    }
+}
     // --- FORM-SPECIFIC HELPERS ---
     function initializeFormDefaults(){if(document.getElementById('date'))document.getElementById('date').valueAsDate=new Date();if(typeof setupInitialDates==='function')setupInitialDates();if(typeof updateAgeAndFooter==='function')updateAgeAndFooter()}
     function setupInitialDates(){const today=new Date().toISOString().split('T')[0];['date','sig_client_date','sig_staff_date','sig_parent_date','sig_other_date','sig_provider_date','sig_supervisor_date','sig_physician_date'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=today})}
-    function updateAgeAndFooter(){const dobInput=document.getElementById('dob');if(dobInput&&dobInput.value){const dob=new Date(dobInput.value);const today=new Date();let age=today.getFullYear()-dob.getFullYear();const m=today.getMonth()-dob.getMonth();if(m<0||(m===0&&today.getDate()<dob.getDate())){age--}document.getElementById('age').value=age>=0?age:''}else if(document.getElementById('age')){document.getElementById('age').value=''}updateFooterInfo()}
-    function updateFooterInfo(){document.getElementById('footer_client_name').value=document.getElementById('clientName').value;document.getElementById('footer_dob').value=document.getElementById('dob').value;document.getElementById('footer_record_number').value=document.getElementById('recordNumber').value}
+function updateAgeAndFooter() {
+    const dobInput = document.getElementById('dob');
+    
+    if (dobInput && dobInput.value) {
+        const dob = new Date(dobInput.value + 'T00:00:00');
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        let age = today.getFullYear() - dob.getFullYear();
+        const monthDiff = today.getMonth() - dob.getMonth();
+        
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+            age--;
+        }
+        
+        const ageInput = document.getElementById('age');
+        if (ageInput) ageInput.value = age >= 0 ? age : '';
+    } else {
+        const ageInput = document.getElementById('age');
+        if (ageInput) ageInput.value = '';
+    }
+    
+    updateFooterInfo();
+}
+
+function updateFooterInfo() {
+    document.getElementById('footer_client_name').value = document.getElementById('clientName').value;
+    document.getElementById('footer_dob').value = document.getElementById('dob').value;
+    document.getElementById('footer_record_number').value = document.getElementById('recordNumber').value;
+}    function updateFooterInfo(){document.getElementById('footer_client_name').value=document.getElementById('clientName').value;document.getElementById('footer_dob').value=document.getElementById('dob').value;document.getElementById('footer_record_number').value=document.getElementById('recordNumber').value}
     function updateNavigation(){const navContainer=document.getElementById('form-nav');if(!navContainer)return;navContainer.innerHTML='';document.querySelectorAll('div[id^="section-"]').forEach(section=>{const title=section.querySelector('h3')?.textContent;if(title){const link=document.createElement('a');link.href=`#${section.id}`;link.className='nav-link';link.textContent=title;navContainer.appendChild(link)}})}
     function buildDiagnosisGrid(){const diagnosisGrid=document.getElementById('diagnosis-grid');if(!diagnosisGrid)return;for(let i=0;i<10;i++){const row=document.createElement('div');row.className='grid grid-cols-1 md:grid-cols-3 gap-4';row.innerHTML=`<div><input type="text" name="diagnosis_name_${i}" class="form-input"></div><div><input type="text" name="diagnosis_code_${i}" class="form-input"></div><div><input type="date" name="diagnosis_date_${i}" class="form-input"></div>`;diagnosisGrid.appendChild(row)}}
     function toggleSignatureSection(sectionType){const checkbox=document.getElementById(`include_${sectionType}_sig`);const section=document.getElementById(`${sectionType}_signature_section`);if(checkbox.checked){section.classList.remove('hidden')}else{section.classList.add('hidden');const inputs=section.querySelectorAll('input');inputs.forEach(input=>input.value='')}}
-
+    
     // PAGE INITIALIZATION
     document.addEventListener('DOMContentLoaded', () => {
-        if(document.getElementById('modalSearch')) document.getElementById('modalSearch').addEventListener('keyup', filterModalItems);
-        ['dob', 'clientName', 'recordNumber'].forEach(id => { const el = document.getElementById(id); if (el) el.addEventListener('input', updateAgeAndFooter); });
+    if(document.getElementById('modalSearch')) document.getElementById('modalSearch').addEventListener('keyup', filterModalItems);
+    ['dob', 'clientName', 'recordNumber'].forEach(id => { const el = document.getElementById(id); if (el) el.addEventListener('input', updateAgeAndFooter); });
 
-        buildDiagnosisGrid();
-        updateNavigation();
-        initializeFormDefaults();
-        setupInitialDates();
-    });
+    buildDiagnosisGrid();
+    updateNavigation();
+    initializeFormDefaults();
+    setupInitialDates();
+    
+    // Add target completion date auto-fill
+    const dateInput = document.getElementById('date');
+    if (dateInput) {
+        dateInput.addEventListener('change', setTargetCompletionDates);
+        if (dateInput.value) setTargetCompletionDates();
+    }
+});
 
     document.getElementById('treatmentPlanForm').addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
