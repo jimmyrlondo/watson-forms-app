@@ -659,6 +659,47 @@
     const FORM_NAME_PRINT = 'Mental Health Individual Treatment Plan';
     const FORM_ELEMENT_ID = 'treatmentPlanForm';
 
+<!-- Add the following inside the existing <script> block, near the top (after the FORM_* constants) -->
+
+/* FIX: global formatDate helper (used by exportData, printing, etc.)
+   Accepts YYYY-MM-DD and returns MM/DD/YYYY, returns '' for invalid input.
+*/
+function formatDate(d) {
+    if (!d || typeof d !== 'string') return '';
+    // Accept only yyyy-mm-dd
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) return '';
+    const [y, m, day] = d.split('-');
+    return `${m}/${day}/${y}`;
+}
+
+/* FIX: ensure client name auto-populates the client signature printed-name field
+   This keeps the client signature printed-name in sync with the main clientName input.
+   Place this inside updateFooterInfo() (or add if missing).
+*/
+function updateFooterInfo() {
+    const clientNameEl = document.getElementById('clientName');
+    const dobEl = document.getElementById('dob');
+    const recordNumberEl = document.getElementById('recordNumber');
+
+    const footerNameEl = document.getElementById('footer_client_name');
+    const footerDobEl = document.getElementById('footer_dob');
+    const footerRecordEl = document.getElementById('footer_record_number');
+
+    if (footerNameEl) footerNameEl.value = clientNameEl ? clientNameEl.value : '';
+    if (footerDobEl) footerDobEl.value = dobEl ? dobEl.value : '';
+    if (footerRecordEl) footerRecordEl.value = recordNumberEl ? recordNumberEl.value : '';
+
+    // FIX: keep the client printed-name signature in sync with the main clientName input
+    const sigClient = document.getElementById('sig_client_name');
+    if (sigClient) sigClient.value = clientNameEl ? clientNameEl.value : '';
+
+    // (Optional) If you also want the staff printed name to default to client name,
+    // uncomment the following lines:
+    // const sigStaff = document.getElementById('sig_staff_name');
+    // if (sigStaff && !sigStaff.value) sigStaff.value = clientNameEl ? clientNameEl.value : '';
+}
+
+
     // --- PRINT FUNCTION ---
  function printForm() {
     const data = getFormData();
@@ -1042,8 +1083,82 @@ function getFormData() {
     
     return data;
 }
-    function populateForm(data){const form=document.getElementById(FORM_ELEMENT_ID);form.reset();for(const key in data){if(key==='formId'||key==='lastModified')continue;const elements=form.elements[key]||form.elements[key+'[]'];if(!elements)continue;const value=data[key];const elementList=elements.nodeName?[elements]:Array.from(elements);const firstEl=elementList[0];if(firstEl.type==='checkbox'){const values=Array.isArray(value)?value:[value];elementList.forEach(el=>{el.checked=values.includes(el.value)})}else if(firstEl.type==='radio'){elementList.forEach(el=>{if(el.value===value)el.checked=true})}else{if(firstEl.value!==undefined)firstEl.value=value}}form.querySelectorAll('[onchange]').forEach(el=>el.dispatchEvent(new Event('change')));if(document.getElementById('dob'))document.getElementById('dob').dispatchEvent(new Event('input'))}
-    function saveToLocalStorage(){const data=getFormData();const clientName=data.clientName.trim();if(!clientName){alert('Please enter a Client Name before saving.');return}const key=`savedForm_${FORM_ID}_${clientName}`;try{localStorage.setItem(key,JSON.stringify(data));alert(`Progress for ${clientName} saved successfully!`)}catch(e){if(e.name==='QuotaExceededError'){alert('Error: Browser storage is full. Please export and then delete some older saved forms to make space.')}else{alert('An unknown error occurred while saving.');console.error(e)}}}
+ function populateForm(data) {
+    const form = document.getElementById(FORM_ELEMENT_ID);
+    if (!form) return;
+
+    // Prevent toggle handlers from clearing restored inputs while we populate
+    window.__isRestoring = true;
+    try {
+        form.reset();
+
+        // Restore all saved keys
+        for (const key in data) {
+            if (key === 'formId' || key === 'lastModified') continue;
+            const value = data[key];
+
+            // Try to find elements by name (including [] groups)
+            let elements = form.elements[key] || form.elements[key + '[]'];
+
+            // If not found by name, try by id (some include_* toggles are stored by id)
+            if (!elements) {
+                const byId = document.getElementById(key);
+                if (byId) elements = byId;
+            }
+            if (!elements) continue;
+
+            const elementList = elements.nodeName ? [elements] : Array.from(elements);
+            const firstEl = elementList[0];
+
+            if (firstEl.type === 'checkbox') {
+                // value might be boolean, array, or string
+                if (typeof value === 'boolean') {
+                    // single checkbox (by id) -> set checked state
+                    elementList.forEach(el => el.checked = !!value);
+                } else {
+                    const values = Array.isArray(value) ? value : [value];
+                    elementList.forEach(el => {
+                        // If the checkbox has a value (group), check if it was included
+                        el.checked = values.includes(el.value);
+                    });
+                }
+            } else if (firstEl.type === 'radio') {
+                elementList.forEach(el => { el.checked = (el.value === value); });
+            } else {
+                // text, date, select, textarea - set the value on the first element
+                if (firstEl.value !== undefined) firstEl.value = value;
+            }
+        }
+
+        // Ensure include_* toggles (and toggle*Sig ids) reflect saved boolean flags and fire change
+        [
+            'include_parent_sig','include_other_sig','include_provider_sig',
+            'include_supervisor_sig','include_physician_sig',
+            'toggleProviderSig','toggleSupervisorSig','togglePhysicianSig'
+        ].forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            // If saved data had this id, it has already been set above when iterating data.
+            // But if it wasn't, try reading from the saved object explicitly
+            if (data[id] !== undefined) el.checked = !!data[id];
+            // Fire change so UI show/hide handlers run (they won't clear inputs because __isRestoring is true)
+            el.dispatchEvent(new Event('change'));
+        });
+
+        // Fire onchange for any elements relying on change to update UI
+        form.querySelectorAll('[onchange]').forEach(el => el.dispatchEvent(new Event('change')));
+
+        // Trigger clientName input so footer/signature fields update after load
+        const clientEl = document.getElementById('clientName');
+        if (clientEl) clientEl.dispatchEvent(new Event('input'));
+
+        // Trigger DOB input so age/footer update
+        if (document.getElementById('dob')) document.getElementById('dob').dispatchEvent(new Event('input'));
+    } finally {
+        window.__isRestoring = false;
+    }
+}
+function saveToLocalStorage(){const data=getFormData();const clientName=data.clientName.trim();if(!clientName){alert('Please enter a Client Name before saving.');return}const key=`savedForm_${FORM_ID}_${clientName}`;try{localStorage.setItem(key,JSON.stringify(data));alert(`Progress for ${clientName} saved successfully!`)}catch(e){if(e.name==='QuotaExceededError'){alert('Error: Browser storage is full. Please export and then delete some older saved forms to make space.')}else{alert('An unknown error occurred while saving.');console.error(e)}}}
     function displaySavedForms(){const savedFormsList=document.getElementById('savedFormsList');savedFormsList.innerHTML='';let savedItems=[];for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i);if(key.startsWith(`savedForm_${FORM_ID}_`)){try{const data=JSON.parse(localStorage.getItem(key));savedItems.push({key,data})}catch(e){console.error('Could not parse saved data:',key,e)}}}savedItems.sort((a,b)=>new Date(b.data.lastModified)-new Date(a.data.lastModified));if(savedItems.length===0){savedFormsList.innerHTML=`<p class="text-gray-500">No saved forms found in this browser.</p>`}else{savedItems.forEach(item=>{const clientName=item.data.clientName||'Unnamed';const lastModified=new Date(item.data.lastModified).toLocaleString();const itemDiv=document.createElement('div');itemDiv.className='modal-item';itemDiv.innerHTML=`<div class="flex-grow" onclick="loadSelectedForm('${item.key}')"><strong class="item-name">${clientName}</strong><br><small>Last saved: ${lastModified}</small></div><button onclick="deleteSavedForm(event,'${item.key}')"class="delete-btn">Delete</button>`;savedFormsList.appendChild(itemDiv)})}document.getElementById('loadModal').classList.remove('hidden');document.getElementById('modalSearch').value='';document.getElementById('modalSearch').focus()}
     function filterModalItems(){const searchTerm=document.getElementById('modalSearch').value.toLowerCase();document.querySelectorAll('.modal-item').forEach(item=>{const name=item.querySelector('.item-name').textContent.toLowerCase();item.style.display=name.includes(searchTerm)?'flex':'none'})}
     function loadSelectedForm(key){const data=JSON.parse(localStorage.getItem(key));populateForm(data);closeModal();alert(`Data for ${data.clientName} has been loaded.`)}
@@ -1098,18 +1213,70 @@ function updateAgeAndFooter() {
 }
 
 function updateFooterInfo() {
-    document.getElementById('footer_client_name').value = document.getElementById('clientName').value;
-    document.getElementById('footer_dob').value = document.getElementById('dob').value;
-    document.getElementById('footer_record_number').value = document.getElementById('recordNumber').value;
-}    function updateFooterInfo(){document.getElementById('footer_client_name').value=document.getElementById('clientName').value;document.getElementById('footer_dob').value=document.getElementById('dob').value;document.getElementById('footer_record_number').value=document.getElementById('recordNumber').value}
-    function updateNavigation(){const navContainer=document.getElementById('form-nav');if(!navContainer)return;navContainer.innerHTML='';document.querySelectorAll('div[id^="section-"]').forEach(section=>{const title=section.querySelector('h3')?.textContent;if(title){const link=document.createElement('a');link.href=`#${section.id}`;link.className='nav-link';link.textContent=title;navContainer.appendChild(link)}})}
+    const clientNameEl = document.getElementById('clientName');
+    const dobEl = document.getElementById('dob');
+    const recordNumberEl = document.getElementById('recordNumber');
+
+    const footerNameEl = document.getElementById('footer_client_name');
+    const footerDobEl = document.getElementById('footer_dob');
+    const footerRecordEl = document.getElementById('footer_record_number');
+
+    if (footerNameEl) footerNameEl.value = clientNameEl ? clientNameEl.value : '';
+    if (footerDobEl) footerDobEl.value = dobEl ? dobEl.value : '';
+    if (footerRecordEl) footerRecordEl.value = recordNumberEl ? recordNumberEl.value : '';
+
+    // FIX: keep the client printed-name signature in sync with the main clientName input
+    const sigClient = document.getElementById('sig_client_name');
+    if (sigClient) sigClient.value = clientNameEl ? clientNameEl.value : '';
+
+    // (Optional) If you also want the staff printed name to default to client name,
+    // uncomment the following lines:
+    // const sigStaff = document.getElementById('sig_staff_name');
+    // if (sigStaff && !sigStaff.value) sigStaff.value = clientNameEl ? clientNameEl.value : '';
+}
+
+function updateNavigation(){const navContainer=document.getElementById('form-nav');if(!navContainer)return;navContainer.innerHTML='';document.querySelectorAll('div[id^="section-"]').forEach(section=>{const title=section.querySelector('h3')?.textContent;if(title){const link=document.createElement('a');link.href=`#${section.id}`;link.className='nav-link';link.textContent=title;navContainer.appendChild(link)}})}
     function buildDiagnosisGrid(){const diagnosisGrid=document.getElementById('diagnosis-grid');if(!diagnosisGrid)return;for(let i=0;i<10;i++){const row=document.createElement('div');row.className='grid grid-cols-1 md:grid-cols-3 gap-4';row.innerHTML=`<div><input type="text" name="diagnosis_name_${i}" class="form-input"></div><div><input type="text" name="diagnosis_code_${i}" class="form-input"></div><div><input type="date" name="diagnosis_date_${i}" class="form-input"></div>`;diagnosisGrid.appendChild(row)}}
-    function toggleSignatureSection(sectionType){const checkbox=document.getElementById(`include_${sectionType}_sig`);const section=document.getElementById(`${sectionType}_signature_section`);if(checkbox.checked){section.classList.remove('hidden')}else{section.classList.add('hidden');const inputs=section.querySelectorAll('input');inputs.forEach(input=>input.value='')}}
-    
+
+function toggleSignatureSection(sectionType) {
+    // Try both naming conventions (include_* ids or toggle*Sig ids)
+    const checkbox = document.getElementById(`include_${sectionType}_sig`) ||
+                     document.getElementById(`toggle${sectionType.charAt(0).toUpperCase() + sectionType.slice(1)}Sig`);
+    const section = document.getElementById(`${sectionType}_signature_section`) ||
+                    document.getElementById(`${sectionType}SigBlock`);
+    if (!checkbox || !section) return;
+
+    if (checkbox.checked) {
+        section.classList.remove('hidden');
+    } else {
+        section.classList.add('hidden');
+
+        // Only clear inputs when the user manually unchecks
+        // During a restore populateForm will set window.__isRestoring = true
+        if (!window.__isRestoring) {
+            // Clear text/date inputs, and uncheck any internal checkboxes/radios
+            section.querySelectorAll('input, textarea').forEach(input => {
+                if (input.type === 'checkbox' || input.type === 'radio') {
+                    input.checked = false;
+                } else {
+                    input.value = '';
+                }
+            });
+        }
+    }
+}
     // PAGE INITIALIZATION
     document.addEventListener('DOMContentLoaded', () => {
     if(document.getElementById('modalSearch')) document.getElementById('modalSearch').addEventListener('keyup', filterModalItems);
-    ['dob', 'clientName', 'recordNumber'].forEach(id => { const el = document.getElementById(id); if (el) el.addEventListener('input', updateAgeAndFooter); });
+  // wire DOB and record number to update age/footer
+['dob', 'recordNumber'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', updateAgeAndFooter);
+});
+
+// FIX: wire clientName to updateFooterInfo so it fills the client signature name in real time
+const clientNameEl = document.getElementById('clientName');
+if (clientNameEl) clientNameEl.addEventListener('input', updateFooterInfo);
 
     buildDiagnosisGrid();
     updateNavigation();
