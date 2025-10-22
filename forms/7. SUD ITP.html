@@ -719,6 +719,7 @@
             data.togglePhysicianSig = document.getElementById('togglePhysicianSig').checked;
             return data;
         }
+        // FIX: Enhanced populateForm to handle boolean checkbox values properly
         function populateForm(data) {
             const form = document.getElementById(FORM_ELEMENT_ID);
             form.reset();
@@ -730,12 +731,21 @@
                 const elementList = elements.nodeName ? [elements] : Array.from(elements);
                 const firstEl = elementList[0];
                 if (firstEl.type === 'checkbox') {
-                    const values = Array.isArray(value) ? value : [value];
-                    elementList.forEach(el => { el.checked = values.includes(el.value) || (value === true && el.name === key); });
+                    // FIX: Handle three cases - array, string, or boolean
+                    if (Array.isArray(value)) {
+                        elementList.forEach(el => { el.checked = value.includes(el.value); });
+                    } else if (typeof value === 'boolean') {
+                        elementList.forEach(el => { el.checked = value; });
+                    } else {
+                        elementList.forEach(el => { el.checked = el.value === value; });
+                    }
                 } else if (firstEl.type === 'radio') {
                     elementList.forEach(el => { if (el.value === value) el.checked = true; });
-                } else { if (firstEl.value !== undefined) firstEl.value = value; }
+                } else {
+                    if (firstEl.value !== undefined) firstEl.value = value;
+                }
             }
+            // FIX: Dispatch change events for toggle checkboxes to show/hide signature blocks
             ['toggleProviderSig', 'toggleSupervisorSig', 'togglePhysicianSig'].forEach(id => {
                 const checkbox = document.getElementById(id);
                 if (checkbox) checkbox.dispatchEvent(new Event('change'));
@@ -775,22 +785,61 @@
             });
             updateAgeAndFooter();
         }
+        // FIX: Auto-fill target completion dates with timezone-safe logic
+        function setTargetCompletionDates() {
+            const mainDate = document.getElementById('date');
+            const targetDate = document.getElementById('target_completion_date');
+            const newTargetDate = document.getElementById('new_target_date');
+            
+            if (mainDate && mainDate.value) {
+                // FIX: Use local midnight normalization to avoid timezone issues
+                const originalDate = new Date(mainDate.value + 'T00:00:00');
+                const oneYearLater = new Date(originalDate);
+                oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
+                
+                const formattedDate = oneYearLater.toISOString().split('T')[0];
+                
+                // Only set if blank so user can edit
+                if (targetDate && !targetDate.value) targetDate.value = formattedDate;
+                if (newTargetDate && !newTargetDate.value) newTargetDate.value = formattedDate;
+            }
+        }
+        
+        // FIX: Timezone-safe age calculation
         function updateAgeAndFooter() {
             const dobInput = document.getElementById('dob');
+            
             if (dobInput && dobInput.value) {
-                const dob = new Date(dobInput.value);
+                // FIX: Treat dob as local midnight to avoid timezone issues
+                const dob = new Date(dobInput.value + 'T00:00:00');
                 const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
                 let age = today.getFullYear() - dob.getFullYear();
-                const m = today.getMonth() - dob.getMonth();
-                if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) { age--; }
-                document.getElementById('age').value = age >= 0 ? age : '';
-            } else if (document.getElementById('age')) {
-                document.getElementById('age').value = '';
+                const monthDiff = today.getMonth() - dob.getMonth();
+                
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+                    age--;
+                }
+                
+                const ageInput = document.getElementById('age');
+                if (ageInput) ageInput.value = age >= 0 ? age : '';
+            } else {
+                const ageInput = document.getElementById('age');
+                if (ageInput) ageInput.value = '';
             }
-            document.getElementById('footer_client_name').value = document.getElementById('clientName').value;
+            
+            // Update footer fields
+            const clientName = document.getElementById('clientName').value;
+            document.getElementById('footer_client_name').value = clientName;
             document.getElementById('footer_dob').value = document.getElementById('dob').value;
             document.getElementById('footer_record_number').value = document.getElementById('recordNumber').value;
-            if(document.getElementById('sig_client_name')) document.getElementById('sig_client_name').value = document.getElementById('clientName').value;
+            
+            // Auto-populate signature client name if field exists and is empty
+            const sigClientName = document.getElementById('sig_client_name');
+            if (sigClientName && !sigClientName.value && clientName) {
+                sigClientName.value = clientName;
+            }
         }
 function updateNavigation() {
     const navContainer = document.getElementById('form-nav');
@@ -848,6 +897,13 @@ function updateNavigation() {
             setupSignatureToggle('togglePhysicianSig', 'physicianSigBlock');
             updateNavigation();
             initializeFormDefaults();
+            
+            // FIX: Wire date input to trigger setTargetCompletionDates
+            const dateInput = document.getElementById('date');
+            if (dateInput) {
+                dateInput.addEventListener('change', setTargetCompletionDates);
+                if (dateInput.value) setTargetCompletionDates();
+            }
         });
         document.getElementById('YOUR_FORM_ID').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') {
